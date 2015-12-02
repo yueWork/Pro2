@@ -5,6 +5,8 @@
 //  Created by byue on 15/11/8.
 //  Copyright © 2015年 byue. All rights reserved.
 //
+//#include <Windows.h>
+//#include <GL/glut.h>
 #include <GLUT/GLUT.h>
 #include <iostream>
 #include <math.h>
@@ -1291,6 +1293,7 @@ void go(){
     while (count<10) {
         s_at[1]-=0.5;
         display();
+//        Sleep(100);
         sleep(1);
         count++;
     }
@@ -1301,6 +1304,7 @@ void go(){
         s_at[2] = float(s_eye[2] + 4*sin(rad));
         
         display();
+//        Sleep(100);
         sleep(1);
         count++;
     }
@@ -1308,6 +1312,7 @@ void go(){
         s_eye[0]-=0.5;
         display();
         cout<<"go";
+//        Sleep(100);
         sleep(1);
         count++;
     }
@@ -1318,12 +1323,14 @@ void go(){
         s_at[2]=float(s_eye[2]+4*sin(rad));
         
         display();
+//        Sleep(100);
         sleep(1);
         count++;
     }
     while(count<50){
         s_at[1]+=0.5;
         display();
+//        Sleep(100);
         sleep(1);
         count++;
     }
