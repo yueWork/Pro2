@@ -92,16 +92,16 @@ void reshape(int w,int h)
 {
     W = w;
     H = h;
-    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+//    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
     
-    GLfloat aspectRatio = (GLfloat)W / (GLfloat)H;//计算窗口横纵比
+//    GLfloat aspectRatio = (GLfloat)W / (GLfloat)H;//计算窗口横纵比
     
-    if (W<=H)
-        glOrtho(-20.0, 20.0, -20.0/aspectRatio, 20.0/aspectRatio, -20.0, 20.0);
-    else
-        glOrtho(-20.0*aspectRatio, 20.0*aspectRatio, -20.0, 20.0, -20.0, 20.0);
+//    if (W<=H)
+//        glOrtho(-20.0, 20.0, -20.0/aspectRatio, 20.0/aspectRatio, -20.0, 20.0);
+//    else
+//        glOrtho(-20.0*aspectRatio, 20.0*aspectRatio, -20.0, 20.0, -20.0, 20.0);
     
 //    glMatrixMode(GL_MODELVIEW);
 //    glLoadIdentity();
