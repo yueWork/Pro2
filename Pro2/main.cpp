@@ -5,9 +5,9 @@
 //  Created by byue on 15/11/8.
 //  Copyright © 2015年 byue. All rights reserved.
 //
-#include <Windows.h>
-#include <GL/glut.h>
-//#include <GLUT/GLUT.h>
+//#include <Windows.h>
+//#include <GL/glut.h>
+#include <GLUT/GLUT.h>
 #include <iostream>
 #include <math.h>
 using namespace std;
@@ -100,17 +100,16 @@ void reshape(int w,int h)
     H = h;
 //    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 //    glMatrixMode(GL_PROJECTION);
+
 //    glLoadIdentity();
-    
+//    
 //    GLfloat aspectRatio = (GLfloat)W / (GLfloat)H;//计算窗口横纵比
-    
+//    
 //    if (W<=H)
 //        glOrtho(-20.0, 20.0, -20.0/aspectRatio, 20.0/aspectRatio, -20.0, 20.0);
 //    else
 //        glOrtho(-20.0*aspectRatio, 20.0*aspectRatio, -20.0, 20.0, -20.0, 20.0);
     
-//    glMatrixMode(GL_MODELVIEW);
-//    glLoadIdentity();
 
 
     GLfloat ratio = 1.0f * W/ H;
@@ -122,15 +121,18 @@ void reshape(int w,int h)
     
 
     gluPerspective(45,ratio,1,1000);
-    glMatrixMode(GL_MODELVIEW);
-    
-    glLoadIdentity();
-    //…Ë÷√…„œÒª˙∫Õπ‚‘¥£®’‚¡Ω∏ˆÀ≥–Ú∫‹÷ÿ“™£¨≤ªƒ‹∑¥π˝¿¥£©
+//    glMatrixMode(GL_MODELVIEW);
+//    
+//    glLoadIdentity();
+//    //…Ë÷√…„œÒª˙∫Õπ‚‘¥£®’‚¡Ω∏ˆÀ≥–Ú∫‹÷ÿ“™£¨≤ªƒ‹∑¥π˝¿¥£©
     gluLookAt(s_eye[0], s_eye[1], s_eye[2],
               s_at[0], s_at[1], s_at[2],
               0.0,1.0, 0.0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     
 }
 
@@ -1337,8 +1339,8 @@ void go(){
     while (count<10) {
         s_at[1]-=0.5;
         display();
-        Sleep(100);
-  //      sleep(1);
+//        Sleep(100);
+        sleep(1);
         count++;
     }
     while(count<20){
@@ -1348,16 +1350,16 @@ void go(){
         s_at[2] = float(s_eye[2] + 4*sin(rad));
         
         display();
-        Sleep(100);
-  //      sleep(1);
+//        Sleep(100);
+        sleep(1);
         count++;
     }
     while(count<30){
         s_eye[0]-=0.5;
         display();
         cout<<"go";
-        Sleep(100);
-//        sleep(1);
+//        Sleep(100);
+        sleep(1);
         count++;
     }
     while (count<40) {
@@ -1367,15 +1369,15 @@ void go(){
         s_at[2]=float(s_eye[2]+4*sin(rad));
         
         display();
-        Sleep(100);
-//        sleep(1);
+//        Sleep(100);
+        sleep(1);
         count++;
     }
     while(count<50){
         s_at[1]+=0.5;
         display();
-       Sleep(100);
-//        sleep(1);
+//       Sleep(100);
+        sleep(1);
         count++;
     }
 }
@@ -1497,8 +1499,8 @@ int main(int argc, char * argv[]) {
     // insert code here...
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (600, 800);
-    glutInitWindowPosition(0, 0);
+    glutInitWindowSize (600, 600);
+    glutInitWindowPosition(200, 0);
     glutCreateWindow("海绵宝宝");
     glutDisplayFunc(display);
     glutMouseFunc (mouse);
