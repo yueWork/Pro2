@@ -1,13 +1,13 @@
-//
+﻿//
 //  main.cpp
 //  Pro2
 //
 //  Created by byue on 15/11/8.
 //  Copyright © 2015年 byue. All rights reserved.
 //
-//#include <Windows.h>
-//#include <GL/glut.h>
-#include <GLUT/GLUT.h>
+#include <Windows.h>
+#include <GL/glut.h>
+//#include <GLUT/GLUT.h>
 #include <iostream>
 #include <math.h>
 using namespace std;
@@ -24,13 +24,19 @@ const GLfloat R=0.25f;
 const int n=2400;
 const GLfloat Pi = 3.1415926536f;
 const   float   DEG2RAD   =   3.14159/180;
-const GLfloat lightPosition[] = {-10.0,-10.0,-10.0,0.0};
+
 const GLfloat lightPosition1[] = {10.0,10.0,10.0,0.0};
 const GLfloat whiteLight[] = {0.8,0.8,0.8,1.0};
 GLfloat matSpecular [] = {0.3,0.3,0.3,1.0};
 GLfloat matShininess [] = {20.0};
 GLfloat matEmission [] = {0.3,0.3,0.3,1.0};
-GLfloat spin = 0;
+//金
+GLfloat mat_ambient[] = { 0.25, 0.23, 0.06, 1.0};
+GLfloat mat_diffuse[] = { 0.35, 0.31, 0.09, 1.0};
+GLfloat mat_specular[] = { 0.80, 0.72, 0.21, 1.0};
+GLfloat mat_shininess[] = { 83.2};
+
+static int spin = 0;
 GLint menu_id;
 GLint menu_PDX_id;
 GLint menu_HMBB_id;
@@ -105,6 +111,8 @@ void reshape(int w,int h)
     
 //    glMatrixMode(GL_MODELVIEW);
 //    glLoadIdentity();
+
+
     GLfloat ratio = 1.0f * W/ H;
     
     glMatrixMode(GL_PROJECTION);
@@ -112,6 +120,7 @@ void reshape(int w,int h)
     
     glViewport(0, 0, w, h);
     
+
     gluPerspective(45,ratio,1,1000);
     glMatrixMode(GL_MODELVIEW);
     
@@ -120,6 +129,8 @@ void reshape(int w,int h)
     gluLookAt(s_eye[0], s_eye[1], s_eye[2],
               s_at[0], s_at[1], s_at[2],
               0.0,1.0, 0.0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
     
 }
 
@@ -1001,10 +1012,21 @@ void display(){
     //  glMatrixMode(GL_MODELVIEW);
     //  glPushMatrix();
     //  glRotatef(spin,0.0,1.0,0.0);
+<<<<<<< HEAD
     glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
     glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
     glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
+=======
+
+>>>>>>> origin/master
     drawobjects(GL_RENDER);
+
+	glPushMatrix();
+	glRotated(spin,1.0,0.0,0.0);
+	glLightfv(GL_LIGHT1,GL_POSITION,lightPosition1);
+    glLightfv(GL_LIGHT1,GL_DIFFUSE,whiteLight);
+    glLightfv(GL_LIGHT1,GL_SPECULAR,whiteLight);
+	glPopMatrix();
     
     glutSwapBuffers();
 }
@@ -1055,10 +1077,17 @@ void normal(unsigned char key,int x,int y){
     }
     if(key==102){
         s_eye[2]-=1;
+<<<<<<< HEAD
     }
     if(key==98){
         s_eye[2]+=1;
     }
+=======
+    }
+    if(key==98){
+        s_eye[2]+=1;
+    }
+>>>>>>> origin/master
     glLoadIdentity();
     gluLookAt(s_eye[0], s_eye[1], s_eye[2],
               s_at[0], s_at[1], s_at[2],
@@ -1069,25 +1098,38 @@ void drawobjects(GLenum mode){
     
     if(mode==GL_SELECT)
         glLoadName(1);   //接下来绘制的对象ID为1
-    
+
+ //   glEnable(GL_COLOR_MATERIAL);
+	glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
+    glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
+    glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
+
     glPushMatrix();
     glTranslatef(tra1,0,pz);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
     drawPDX();
     glPopMatrix();
+	//glDisable(GL_COLOR_MATERIAL);
     
-    
+	
     glPushMatrix();
     if(mode==GL_SELECT)
         glLoadName(2);   //接下来绘制的对象ID为2
-    
+
+	//glEnable(GL_COLOR_MATERIAL);
+	glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
+	glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
+
     glTranslatef(tra2-10.0f, 0.0,hz-3.0f);
     glRotatef(rot2,0,1,0);
     glScalef(sca2,sca2,sca2);
     
     drawHMBB();
     glPopMatrix();
+	//glDisable(GL_COLOR_MATERIAL);
     
     
     
@@ -1179,22 +1221,17 @@ void init()
 {
     glClearColor(1.0,1.0,1.0,1.0);
     glClearDepth(1.0);
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_COLOR_MATERIAL);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glLightfv(GL_LIGHT0,GL_POSITION,lightPosition);
-    glLightfv(GL_LIGHT0,GL_DIFFUSE,whiteLight);
-    glLightfv(GL_LIGHT0,GL_SPECULAR,whiteLight);
-    
+
+	glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+
     glEnable(GL_LIGHT1);
-    glLightfv(GL_LIGHT1,GL_POSITION,lightPosition1);
-    glLightfv(GL_LIGHT1,GL_DIFFUSE,whiteLight);
-    glLightfv(GL_LIGHT1,GL_SPECULAR,whiteLight);
     
+	glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void forward(){
@@ -1300,8 +1337,8 @@ void go(){
     while (count<10) {
         s_at[1]-=0.5;
         display();
-//        Sleep(100);
-        sleep(1);
+        Sleep(100);
+  //      sleep(1);
         count++;
     }
     while(count<20){
@@ -1311,16 +1348,16 @@ void go(){
         s_at[2] = float(s_eye[2] + 4*sin(rad));
         
         display();
-//        Sleep(100);
-        sleep(1);
+        Sleep(100);
+  //      sleep(1);
         count++;
     }
     while(count<30){
         s_eye[0]-=0.5;
         display();
         cout<<"go";
-//        Sleep(100);
-        sleep(1);
+        Sleep(100);
+//        sleep(1);
         count++;
     }
     while (count<40) {
@@ -1330,15 +1367,15 @@ void go(){
         s_at[2]=float(s_eye[2]+4*sin(rad));
         
         display();
-//        Sleep(100);
-        sleep(1);
+        Sleep(100);
+//        sleep(1);
         count++;
     }
     while(count<50){
         s_at[1]+=0.5;
         display();
-//        Sleep(100);
-        sleep(1);
+       Sleep(100);
+//        sleep(1);
         count++;
     }
 }
@@ -1355,6 +1392,14 @@ void recover(){
     
     s_angle=-90.0;
 }
+
+void light(){
+	for(int i=1;i<60;i++){
+	spin=(spin+6)%360;
+	display();
+	}
+}
+
 void menu(int id){
     switch (id)
     {
@@ -1365,6 +1410,9 @@ void menu(int id){
             break;
         case 15:
             recover();
+            break;
+		case 16:
+            light();
             break;
     }
     glutPostRedisplay();
@@ -1480,6 +1528,7 @@ int main(int argc, char * argv[]) {
     glutAddMenuEntry("Exit",13);
     glutAddMenuEntry("Go", 14);
     glutAddMenuEntry("Recover", 15);
+	glutAddMenuEntry("Light", 16);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     
     init();
