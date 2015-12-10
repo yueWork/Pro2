@@ -1079,17 +1079,11 @@ void normal(unsigned char key,int x,int y){
     }
     if(key==102){
         s_eye[2]-=1;
-<<<<<<< HEAD
     }
+
     if(key==98){
         s_eye[2]+=1;
     }
-=======
-    }
-    if(key==98){
-        s_eye[2]+=1;
-    }
->>>>>>> origin/master
     glLoadIdentity();
     gluLookAt(s_eye[0], s_eye[1], s_eye[2],
               s_at[0], s_at[1], s_at[2],
