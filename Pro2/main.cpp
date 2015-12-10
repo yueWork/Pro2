@@ -1,4 +1,4 @@
-﻿//
+//
 //  main.cpp
 //  Pro2
 //
@@ -1518,6 +1518,7 @@ int main(int argc, char * argv[]) {
     glutMainLoop();
     
     return 0;
+    //cout
     
 }
 
