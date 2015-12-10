@@ -61,7 +61,7 @@ GLuint selectedIndex=1;	 //击中对象的ID
 void DrawCircle(float x,float y,float z,GLfloat R,int r,int g,int b){
     
     cout<<"Hello world!";
-    
+    cout<<"heihei";
     cout<<"test";
     int i;
     glColor3ub(r,g,b);
