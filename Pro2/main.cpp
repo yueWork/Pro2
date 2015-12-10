@@ -1516,6 +1516,7 @@ int main(int argc, char * argv[]) {
     
     init();
     glutMainLoop();
+    //cout<<"test"<<endl;
     
     return 0;
     //cout
