@@ -1010,26 +1010,13 @@ void drawHMBB(){
 }
 void display(){
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    
-    //  glMatrixMode(GL_MODELVIEW);
-    //  glPushMatrix();
-    //  glRotatef(spin,0.0,1.0,0.0);
-<<<<<<< HEAD
-    glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
-    glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
-    glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
-=======
-
->>>>>>> origin/master
-    drawobjects(GL_RENDER);
-
 	glPushMatrix();
 	glRotated(spin,1.0,0.0,0.0);
 	glLightfv(GL_LIGHT1,GL_POSITION,lightPosition1);
     glLightfv(GL_LIGHT1,GL_DIFFUSE,whiteLight);
     glLightfv(GL_LIGHT1,GL_SPECULAR,whiteLight);
 	glPopMatrix();
-    
+    drawobjects(GL_RENDER);
     glutSwapBuffers();
 }
 void specialKeys(int key,int x,int y){
@@ -1497,7 +1484,7 @@ int main(int argc, char * argv[]) {
     glutInitWindowPosition(200, 0);
     glutCreateWindow("海绵宝宝");
     glutDisplayFunc(display);
-    glutMouseFunc (mouse);
+//    glutMouseFunc (mouse);
     glutSpecialFunc(specialKeys);
     glutKeyboardFunc(normal);
     glutReshapeFunc(reshape);
