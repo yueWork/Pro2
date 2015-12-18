@@ -53,29 +53,16 @@ GLfloat hz=0;
 GLfloat pz=0;
 GLfloat hrz=0;
 GLfloat prz=0;
-//GLfloat ratio＝0;
 int W, H;
+#define BMP_Header_Length 54
+GLuint texGround;
+GLuint texHMBB_face_front;
+GLuint texHMBB_face_back;
+GLuint texHMBB_cloth_front;
+GLuint texHMBB_cloth_back;
 
 GLuint selectedIndex=1;	 //击中对象的ID
 
-void DrawCircle(float x,float y,float z,GLfloat R,int r,int g,int b){
-    int i;
-    glColor3ub(r,g,b);
-    glMatrixMode(GL_MODELVIEW);
-    glBegin(GL_POLYGON);
-    for(i=0;i<n;i++)
-        glVertex3f(x+R*cos(2*Pi/n*i),y+R*sin(2*Pi/n*i),z);
-    glEnd();
-}
-void DrawCircleLine(float x,float y,float z,GLfloat R){
-    int i;
-    glColor3f(0,0,0);
-    glBegin(GL_LINE_STRIP);
-    for(i=0;i<n;i++)
-        glVertex3f(x+R*cos(2*Pi/n*i),y+R*sin(2*Pi/n*i),z);
-    glEnd();
-    glFlush();
-}
 void DrawCurve(float x,float y,float z,float xradius,float yradius,int degree1,int degree2){
     int i=n*degree1/360;
     int end=n*degree2/360;
@@ -85,33 +72,13 @@ void DrawCurve(float x,float y,float z,float xradius,float yradius,int degree1,i
         glVertex3f(x+xradius*cos(2*Pi/n*i),y+yradius*sin(2*Pi/n*i),z);
     glEnd();
 }
-void DrawStraightLine(float xB,float yB,float zB,float xE,float yE,float zE){
-    glColor3ub(0, 0, 0);
-    glBegin(GL_LINES);
-    glVertex3f(xB, yB, zB);
-    glVertex3f(xE, yE, zE);
-    glEnd();
-}
+
 void drawobjects(GLenum);
 
 void reshape(int w,int h)
 {
     W = w;
     H = h;
-//    glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-//    glMatrixMode(GL_PROJECTION);
-
-//    glLoadIdentity();
-//    
-//    GLfloat aspectRatio = (GLfloat)W / (GLfloat)H;//计算窗口横纵比
-//    
-//    if (W<=H)
-//        glOrtho(-20.0, 20.0, -20.0/aspectRatio, 20.0/aspectRatio, -20.0, 20.0);
-//    else
-//        glOrtho(-20.0*aspectRatio, 20.0*aspectRatio, -20.0, 20.0, -20.0, 20.0);
-    
-
-
     GLfloat ratio = 1.0f * W/ H;
     
     glMatrixMode(GL_PROJECTION);
@@ -121,13 +88,11 @@ void reshape(int w,int h)
     
 
     gluPerspective(45,ratio,1,1000);
-//    glMatrixMode(GL_MODELVIEW);
-//    
-//    glLoadIdentity();
-//    //…Ë÷√…„œÒª˙∫Õπ‚‘¥£®’‚¡Ω∏ˆÀ≥–Ú∫‹÷ÿ“™£¨≤ªƒ‹∑¥π˝¿¥£©
-    gluLookAt(s_eye[0], s_eye[1], s_eye[2],
-              s_at[0], s_at[1], s_at[2],
-              0.0,1.0, 0.0);
+
+//    gluLookAt(s_eye[0], s_eye[1], s_eye[2],
+//              s_at[0], s_at[1], s_at[2],
+//              0.0,1.0, 0.0);
+    gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);//30,40
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
     
@@ -165,7 +130,6 @@ GLvoid DrawCircleArea(float cx, float cy, float cz, float r, int num_segments)
     glVertex4fv(vertex);
     glEnd();
 }
-
 void mySolidCylinder( GLUquadric*	quad,
                      GLdouble base,
                      GLdouble top,
@@ -179,147 +143,6 @@ void mySolidCylinder( GLUquadric*	quad,
     DrawCircleArea(0.0, 0.0, height, top, slices);
     //base
     DrawCircleArea(0.0, 0.0, 0.0, base, slices);
-}
-void drawSphere(GLfloat xx, GLfloat yy, GLfloat zz, GLfloat radius, GLfloat M, GLfloat N)
-{
-    float step_z = Pi/M;
-    float step_xy = 2*Pi/N;
-    float x[4],y[4],z[4];
-    
-    float angle_z = 0.0;
-    float angle_xy = 0.0;
-    int i=0, j=0;
-    glColor3ub(255, 192, 203);
-    glBegin(GL_QUADS);
-    for(i=0; i<M; i++)
-    {
-        angle_z = i * step_z;
-        
-        for(j=0; j<N; j++)
-        {
-            angle_xy = j * step_xy;
-            
-            x[0] = radius * sin(angle_z) * cos(angle_xy);
-            y[0] = radius * sin(angle_z) * sin(angle_xy);
-            z[0] = radius * cos(angle_z);
-            
-            x[1] = radius * sin(angle_z + step_z) * cos(angle_xy);
-            y[1] = radius * sin(angle_z + step_z) * sin(angle_xy);
-            z[1] = radius * cos(angle_z + step_z);
-            
-            x[2] = radius*sin(angle_z + step_z)*cos(angle_xy + step_xy);
-            y[2] = radius*sin(angle_z + step_z)*sin(angle_xy + step_xy);
-            z[2] = radius*cos(angle_z + step_z);
-            
-            x[3] = radius * sin(angle_z) * cos(angle_xy + step_xy);
-            y[3] = radius * sin(angle_z) * sin(angle_xy + step_xy);
-            z[3] = radius * cos(angle_z);
-            
-            for(int k=0; k<4; k++)
-            {
-                glVertex3f(xx+x[k], yy+y[k],zz+z[k]);
-            }
-        }
-    }
-    glEnd();
-}
-void DrawTooth2D(float x,float y,float z){
-    glColor3ub(255, 255, 255);
-    glBegin(GL_POLYGON);
-    glVertex3f(x, y, z);
-    glVertex3f(x+0.5, y, z);
-    glVertex3f(x+0.5, y-0.5, z);
-    glVertex3f(x, y-0.5, z);
-    glEnd();
-}
-void drawCube(float *a,float l,float w,float h){
-    
-    glBegin(GL_QUADS);
-    //前面
-    glVertex3f(a[0],a[1],a[2]);//A
-    glVertex3f(a[0]+l,a[1],a[2]);//B
-    glVertex3f(a[0]+l,a[1]-h,a[2]);//D
-    glVertex3f(a[0],a[1]-h,a[2]);//C
-    
-    //后面
-    glVertex3f(a[0],a[1],a[2]-w);//E
-    glVertex3f(a[0]+l,a[1],a[2]-w);//F
-    glVertex3f(a[0]+l,a[1]-h,a[2]-w);//H
-    glVertex3f(a[0],a[1]-h,a[2]-w);//G
-    
-    //上面
-    glVertex3f(a[0],a[1],a[2]);//A
-    glVertex3f(a[0]+l,a[1],a[2]);//B
-    glVertex3f(a[0]+l,a[1],a[2]-w);//F
-    glVertex3f(a[0],a[1],a[2]-w);//E
-    
-    //下面
-    glVertex3f(a[0]+l,a[1]-h,a[2]);//D
-    glVertex3f(a[0],a[1]-h,a[2]);//C
-    glVertex3f(a[0],a[1]-h,a[2]-w);//G
-    glVertex3f(a[0]+l,a[1]-h,a[2]-w);//H
-    
-    //左边
-    glVertex3f(a[0],a[1],a[2]);//A
-    glVertex3f(a[0],a[1]-h,a[2]);//C
-    glVertex3f(a[0],a[1]-h,a[2]-w);//G
-    glVertex3f(a[0],a[1],a[2]-w);//E
-    
-    //右边
-    glVertex3f(a[0]+l,a[1],a[2]);//B
-    glVertex3f(a[0]+l,a[1]-h,a[2]);//D
-    glVertex3f(a[0]+l,a[1]-h,a[2]-w);//H
-    glVertex3f(a[0]+l,a[1],a[2]-w);//F
-    
-    glEnd();
-    
-    glColor3f(0,0,0);
-    
-    glBegin(GL_LINES);
-    glVertex3f(a[0],a[1],a[2]);//A
-    glVertex3f(a[0],a[1]-h,a[2]+0.001);//C
-    glEnd();
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(a[0],a[1],a[2]);//A
-    glVertex3f(a[0]+l,a[1],a[2]);//B
-    glVertex3f(a[0]+l,a[1]-h,a[2]+0.001);//D
-    glVertex3f(a[0],a[1]-h,a[2]+0.001);//C
-    glEnd();
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(a[0],a[1],a[2]);//A
-    glVertex3f(a[0],a[1],a[2]-w);//E
-    glVertex3f(a[0]-0.001,a[1]-h,a[2]-w);//G
-    glVertex3f(a[0]-0.001,a[1]-h,a[2]);//C
-    glEnd();
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(a[0]+l,a[1],a[2]);//B
-    glVertex3f(a[0]+l+0.001,a[1],a[2]-w);//F
-    glVertex3f(a[0]+l+0.001,a[1]-h,a[2]-w);//H
-    glVertex3f(a[0]+l,a[1]-h,a[2]);//D
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex3f(a[0],a[1],a[2]-w);//E
-    glVertex3f(a[0]+l+0.001,a[1],a[2]-w);//F
-    glEnd();
-    glBegin(GL_LINES);
-    glVertex3f(a[0],a[1]-h,a[2]-w-0.001);//G
-    glVertex3f(a[0]+l,a[1]-h,a[2]-w-0.001);//H
-    glEnd();
-    
-    
-}
-void DrawEllipse(float x,float y,float z,float angle_x,float a, float b, int start_angle, int end_angle){
-    glBegin(GL_POLYGON);
-    glColor3ub(165, 138, 12);
-    glVertex3f(x,y,z);
-    for (int i = start_angle; i <= end_angle; i++){
-        float u = a*cos(Pi / 180 * i)*cos(Pi/180*angle_x)-b*sin(Pi / 180 * i)*sin(Pi/180*angle_x)+x;
-        float v = a*cos(Pi / 180 * i)*sin(Pi/180*angle_x)+b*sin(Pi / 180 * i)*cos(Pi/180*angle_x)+y;
-        glVertex3f(u,v,z);
-        
-        
-    }
-    glEnd();
 }
 void drawPDX()
 {
@@ -348,18 +171,6 @@ void drawPDX()
     DrawCurve(0, 4, 0, 1, 0.5, 190, 280);
     glPopMatrix();
     
-    //    glColor3ub(249, 126, 128);
-    //    glPushMatrix();
-    //    glScalef(1.2, 0.4, 1);
-    //    glTranslatef(0, 5.5, 1.4);
-    //    glutSolidSphere(0.5, 200, 200);
-    //    glPopMatrix();
-    //
-    //    glPushMatrix();
-    //    glScalef(1.2, 0.4, 1);
-    //    glTranslatef(0, 5.3, 1.4);
-    //    glutSolidSphere(0.5, 200, 200);
-    //    glPopMatrix();
     
     //眼珠
     glColor3ub(255,255,255);
@@ -484,267 +295,116 @@ void drawPDX()
 }
 void drawHMBB(){
     
-    
-    
-    glColor3ub(253, 247, 62);//黄色
+    //身子前面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_face_front);
     glBegin(GL_QUADS);
-    //    glNormal3f( 0.0F, 0.0F, 1.0F);
-    //1--前面--------------------------
-    glVertex3f( -2.5f,0.0f,1.0f);
-    glVertex3f(2.5f,0.0f, 1.0f);
-    glVertex3f( 3.0f,5.0f, 1.0f);
-    glVertex3f(-3.0f,5.0f, 1.0f);
-    
-    
-    //2--后面--------------------------
-    //    glNormal3f( 0.0F, 0.0F,-1.0F);
-    glVertex3f( -2.5f,0.0f,-1.0f);
-    glVertex3f(2.5f,0.0f, -1.0f);
-    glVertex3f( 3.0f,5.0f, -1.0f);
-    glVertex3f(-3.0f,5.0f, -1.0f);
-    //3--上面--------------------------
-    //    glNormal3f( 0.0F, 1.0F, 0.0F);
-    glVertex3f( -3.0f,5.0f,1.0f);
-    glVertex3f(3.0f,5.0f, 1.0f);
-    glVertex3f( 3.0f,5.0f, -1.0f);
-    glVertex3f(-3.0f,5.0f, -1.0f);
-    //4--下面--------------------------
-    //    glNormal3f( 0.0F,-1.0F, 0.0F);
-    glVertex3f(-2.5f,0.0f, 1.0f);
-    glVertex3f( 2.5f,0.0f, 1.0f);
-    glVertex3f(2.5f,0.0f, -1.0f);
-    glVertex3f( -2.5f,0.0f,-1.0f);
-    
-    //5--右面--------------------------
-    //    glNormal3f( 1.0F, 0.0F, 0.0F);
-    glVertex3f( 2.5f,0.0f,1.0f);
-    glVertex3f(2.5f,0.0f, -1.0f);
-    glVertex3f(3.0f,5.0f, -1.0f);
-    glVertex3f(3.0f,5.0f, 1.0f);
-    
-    //6--左面--------------------------*/
-    //    glNormal3f(-1.0F, 0.0F, 0.0F);
-    glVertex3f( -2.5f,0.0f,1.0f);
-    glVertex3f(-2.5f,0.0f, -1.0f);
-    glVertex3f( -3.0f,5.0f, -1.0f);
-    glVertex3f(-3.0f,5.0f, 1.0f);
-    
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-3.0f,5.0f, 1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 3.0f,5.0f, 1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,0.0f, 1.0f);
     glEnd();
+    glDisable(GL_TEXTURE_2D);
     
-    //1
-    glColor3ub(0, 0, 0);
-    glBegin(GL_LINE_STRIP);
-    glVertex3f( -2.5f,0.0f,1.01f);
-    glVertex3f(2.5f,0.0f, 1.01f);
-    glVertex3f( 3.0f,5.0f, 1.01f);
-    glVertex3f(-3.0f,5.0f, 1.01f);
-    glVertex3f( -2.5f,0.0f,1.01f);
+    //身子后面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,-1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-3.0f,5.0f,-1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f( 3.0f,5.0f,-1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,0.0f,-1.0f);
     glEnd();
-    //2
-    glBegin(GL_LINE_STRIP);
-    glVertex3f( -2.5f,0.0f,-1.0f);
-    glVertex3f(2.5f,0.0f, -1.0f);
-    glVertex3f( 3.0f,5.0f, -1.0f);
-    glVertex3f(-3.0f,5.0f, -1.0f);
+    glDisable(GL_TEXTURE_2D);
+    
+    //身子左面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,-1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f, -1.0f);
+    glTexCoord2f(0.5f, 1.0f); glVertex3f(-3.0f,5.0f,-1.0f);
+    glTexCoord2f(0.5f, 0.0f); glVertex3f(-3.0f,5.0f, 1.0f);
     glEnd();
-    //3
-    glBegin(GL_LINE_STRIP);
-    glVertex3f( -3.0f,5.0f,1.0f);
-    glVertex3f(3.0f,5.0f, 1.0f);
-    glVertex3f( 3.0f,5.0f, -1.0f);
-    glVertex3f(-3.0f,5.0f, -1.0f);
+    glDisable(GL_TEXTURE_2D);
+    
+    //身子右面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,0.0f,1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
+    glTexCoord2f(0.5f, 1.0f); glVertex3f(3.0f,5.0f,-1.0f);
+    glTexCoord2f(0.5f, 0.0f); glVertex3f(3.0f,5.0f, 1.0f);
     glEnd();
-    //4
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(-2.5f,0.0f, 1.0f);
-    glVertex3f( 2.5f,0.0f, 1.0f);
-    glVertex3f(2.5f,0.0f, -1.0f);
-    glVertex3f( -2.5f,0.0f,-1.0f);
-    glVertex3f(-2.5f,0.0f, 1.0f);
+    glDisable(GL_TEXTURE_2D);
+    
+    //身子上面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-3.0f,5.0f,1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(3.0f,5.0f, 1.0f);
+    glTexCoord2f(0.5f, 1.0f); glVertex3f(3.0f,5.0f,-1.0f);
+    glTexCoord2f(0.5f, 0.0f); glVertex3f(-3.0f,5.0f,-1.0f);
     glEnd();
-    //5
-    glBegin(GL_LINE_STRIP);
-    glVertex3f( 2.5f,0.0f,1.0f);
-    glVertex3f(2.5f,0.0f, -1.0f);
-    glVertex3f(3.0f,5.0f, -1.0f);
-    glVertex3f(3.0f,5.0f, 1.0f);
-    glVertex3f( 2.5f,0.0f,1.0f);
+    glDisable(GL_TEXTURE_2D);
+    
+    //身子下面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,-1.2f, 1.0f);
+    glTexCoord2f(0.5f, 1.0f); glVertex3f(2.5f,-1.2f,-1.0f);
+    glTexCoord2f(0.5f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
     glEnd();
-    //6
-    glBegin(GL_LINE_STRIP);
-    glVertex3f( -2.5f,0.0f,1.0f);
-    glVertex3f(-2.5f,0.0f, -1.0f);
-    glVertex3f( -3.0f,5.0f, -1.0f);
-    glVertex3f(-3.0f,5.0f, 1.0f);
+    glDisable(GL_TEXTURE_2D);
+    
+    //衣服前面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_front);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f,0.0f, 1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,-1.2f,1.0f);
     glEnd();
+    glDisable(GL_TEXTURE_2D);
     
-    //绘制暗点
-    
-    DrawEllipse(-2.3, 4.5, 1.1, 325, 0.15, 0.2, 0, 360);
-    DrawEllipse(-2.5, 3.8, 1.1, 325, 0.15, 0.2, 0, 360);
-    DrawEllipse(2.5, 4.6, 1.1, 325, 0.15, 0.2, 0, 360);
-    
-    DrawEllipse(-1.9, 1.4, 1.1, 325, 0.15, 0.2, 0, 360);
-    DrawEllipse(1.7, 1.2, 1.1, 325, 0.2, 0.4, 0, 360);
-    DrawEllipse(1.7, 0.5, 1.1, 325, 0.15, 0.2, 0, 360);
-    //    DrawEclipse(-2, 0.5, 1.1, 0.3, 0.4, 165, 138, 12);
-    DrawEllipse(-1.6, 0.7, 1.1,325, 0.2, 0.4, 0, 360);
-    //绘制眼睛外圈
-    DrawCircle(1, 3.5,1.1, 1, 255, 255, 255);
-    DrawCircle(-1, 3.5,1.1, 1, 255, 255, 255);
-    DrawCircleLine(1, 3.5, 1.001, 1.01);
-    DrawCircleLine(-1, 3.5, 1.001, 1.01);
-    
-    //绘制眼睛内圈
-    DrawCircle(0.7, 3.5,1.12, 0.5,70,183,237);
-    DrawCircle(-0.7, 3.5,1.12, 0.5,70,183,237);
-    DrawCircleLine(0.7, 3.5, 1.12, 0.51);
-    DrawCircleLine(-0.7, 3.5, 1.12, 0.51);
-    
-    //绘制眼睛最内圈
-    DrawCircle(0.7, 3.5,1.14, 0.3,0,0,0);
-    DrawCircle(-0.7, 3.5,1.14, 0.3,0,0,0);
-    
-    //绘制睫毛
-    DrawStraightLine(1, 4.5, 1.1, 1, 4.9, 1.1);
-    DrawStraightLine(-1, 4.5, 1.1, -1, 4.9, 1.1);
-    DrawStraightLine(1.3, 4.3, 1.1, 1.5, 4.8, 1.1);
-    DrawStraightLine(-1.3, 4.3, 1.1, -1.5, 4.8, 1.1);
-    DrawStraightLine(0.7, 4.3, 1.1, 0.5, 4.8, 1.1);
-    DrawStraightLine(-0.7, 4.3, 1.1, -0.5, 4.8, 1.1);
-    
-    //绘制嘴巴
-    DrawCurve(0, 1.8,1.1, 1.8, 0.1, 30 , 150);
-    
-    DrawTooth2D(0.1, 1.9, 1.1);
-    DrawTooth2D(-0.6, 1.9, 1.1);
-    DrawStraightLine(0.1, 1.9, 1.1, 0.1, 1.4, 1.1);
-    DrawStraightLine(0.6, 1.9, 1.11, 0.6, 1.4, 1.11);
-    DrawStraightLine(0.1, 1.4, 1.11, 0.6, 1.4, 1.11);
-    DrawStraightLine(-0.1, 1.9, 1.1, -0.1, 1.4, 1.1);
-    DrawStraightLine(-0.6, 1.9, 1.11, -0.6, 1.4, 1.11);
-    DrawStraightLine(-0.1, 1.4, 1.11, -0.6, 1.4, 1.11);
-    
-    //身子1
-    float A_1[3]={-2.5f,0.0f,1.0f};
-    glColor3ub(255, 255, 255);//
-    drawCube(A_1,5,2,0.5);
-    
-    //领带
-    glColor3ub(0, 0, 0);
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(-0.9f, 0.0f, 1.01f);
-    glVertex3f(-0.45f, -0.4f, 1.01f);
-    glVertex3f(-0.2f, 0.0f, 1.01f);
+    //衣服后面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,-1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,-1.2f,-1.0f);
     glEnd();
+    glDisable(GL_TEXTURE_2D);
     
-    glColor3ub(200, 0, 5);
-    glBegin(GL_POLYGON);
-    glVertex3f(-0.2f, 0.0f, 1.01f);
-    glVertex3f(-0.05f, -0.3f, 1.01f);
-    glVertex3f(0.05f, -0.3f, 1.01f);
-    glVertex3f(0.2f, 0.0f, 1.01f);
+    //衣服左面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,-1.0f);
+    glTexCoord2f(0.5f, 1.0f); glVertex3f(-2.5f,0.0f,1.0f);
+    glTexCoord2f(0.5f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
     glEnd();
+    glDisable(GL_TEXTURE_2D);
     
-    glBegin(GL_POLYGON);
-    glVertex3f(-0.05f, -0.3f, 1.01f);
-    glVertex3f(-0.3f, -0.7f, 1.01f);
-    glVertex3f(0.0f, -1.0f, 1.01f);
-    glVertex3f(0.3f, -0.7f, 1.01f);
-    glVertex3f(0.05f, -0.3f, 1.01f);
+    //衣服右面
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,-1.2f,-1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
+    glTexCoord2f(0.5f, 1.0f); glVertex3f(2.5f,0.0f,1.0f);
+    glTexCoord2f(0.5f, 0.0f); glVertex3f(2.5f,-1.2f,1.0f);
     glEnd();
-    glColor3ub(0, 0, 0);
-    glBegin(GL_LINE_STRIP);
-    glVertex3f(0.9f, 0.0f, 1.01f);
-    glVertex3f(0.45f, -0.4f, 1.01f);
-    glVertex3f(0.2f, 0.0f, 1.01f);
-    glEnd();
+    glDisable(GL_TEXTURE_2D);
     
-    //身子2
-    float A_2[3]={-2.5f,-0.5f,1.0f};
-    glColor3ub(170, 97, 0);//棕色
-    drawCube(A_2,5,2,0.6f);
-    
-    //前面
-    glColor3ub(0, 0, 0);
-    glBegin(GL_POLYGON);
-    glVertex3f(-2.3f, -0.6f, 1.01);
-    glVertex3f(-1.5f, -0.6f, 1.01);
-    glVertex3f(-1.5f, -0.8f, 1.01);
-    glVertex3f(-2.3f, -0.8f, 1.01);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glVertex3f(-1.0f, -0.6f, 1.01);
-    glVertex3f(1.0f, -0.6f, 1.01);
-    glVertex3f(1.0f, -0.8f, 1.01);
-    glVertex3f(-1.0f, -0.8f, 1.01);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glVertex3f(2.3f, -0.6f, 1.01);
-    glVertex3f(1.5f, -0.6f, 1.01);
-    glVertex3f(1.5f, -0.8f, 1.01);
-    glVertex3f(2.3f, -0.8f, 1.01);
-    glEnd();
-    //左面
-    glBegin(GL_POLYGON);
-    glVertex3f(-2.501f, -0.6f, 0.8);
-    glVertex3f(-2.501f, -0.6f, 0.3);
-    glVertex3f(-2.501f, -0.8f, 0.3);
-    glVertex3f(-2.501f, -0.8f, 0.8);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glVertex3f(-2.501f, -0.6f, -0.8);
-    glVertex3f(-2.501f, -0.6f, -0.3);
-    glVertex3f(-2.501f, -0.8f, -0.3);
-    glVertex3f(-2.501f, -0.8f, -0.8);
-    glEnd();
-    //后面
-    glBegin(GL_POLYGON);
-    glVertex3f(-2.3f, -0.6f, -1.01);
-    glVertex3f(-1.5f, -0.6f, -1.01);
-    glVertex3f(-1.5f, -0.8f, -1.01);
-    glVertex3f(-2.3f, -0.8f, -1.01);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glVertex3f(-1.0f, -0.6f, -1.01);
-    glVertex3f(-0.2f, -0.6f, -1.01);
-    glVertex3f(-0.2f, -0.8f, -1.01);
-    glVertex3f(-1.0f, -0.8f, -1.01);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glVertex3f(1.0f, -0.6f, -1.01);
-    glVertex3f(0.2f, -0.6f, -1.01);
-    glVertex3f(0.2f, -0.8f, -1.01);
-    glVertex3f(1.0f, -0.8f, -1.01);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glVertex3f(2.3f, -0.6f, -1.01);
-    glVertex3f(1.5f, -0.6f, -1.01);
-    glVertex3f(1.5f, -0.8f, -1.01);
-    glVertex3f(2.3f, -0.8f, -1.01);
-    glEnd();
-    
-    
-    //右边
-    glBegin(GL_POLYGON);
-    glVertex3f(2.501f, -0.6f, 0.8);
-    glVertex3f(2.501f, -0.6f, 0.3);
-    glVertex3f(2.501f, -0.8f, 0.3);
-    glVertex3f(2.501f, -0.8f, 0.8);
-    glEnd();
-    
-    glBegin(GL_POLYGON);
-    glVertex3f(2.501f, -0.6f, -0.8);
-    glVertex3f(2.501f, -0.6f, -0.3);
-    glVertex3f(2.501f, -0.8f, -0.3);
-    glVertex3f(2.501f, -0.8f, -0.8);
-    glEnd();
     //左手臂
     glColor3ub(255, 255, 255);
     
@@ -759,7 +419,6 @@ void drawHMBB(){
     
     glRotatef(80, 0, 0, 1);
     glRotatef(90,0,1,0);
-    
     
     GLUquadricObj *quadratic_17;
     quadratic_17=gluNewQuadric();
@@ -788,7 +447,6 @@ void drawHMBB(){
     glRotatef(100, 0, 0, 1);
     glRotatef(90,0,1,0);
     
-    
     GLUquadricObj *quadratic_18;
     quadratic_18=gluNewQuadric();
     mySolidCylinder(quadratic_18,0.2f,0.2f,2.8f,32,32);
@@ -810,10 +468,14 @@ void drawHMBB(){
     glTranslatef(-1.0f, -1.1f, 0.0f);
     
     glRotatef(90,1,0,0);
+    glEnable(GL_TEXTURE_2D);
     
     GLUquadricObj *quadratic_1;
     quadratic_1=gluNewQuadric();
+    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
+    gluQuadricTexture(quadratic_1, GL_TRUE);
     mySolidCylinder(quadratic_1,0.7f,0.7f,0.5f,32,32);
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
     
     //右裤子
@@ -965,8 +627,6 @@ void drawHMBB(){
     glPushMatrix();
     glTranslatef(-1.0f, -3.5f, 0.0f);
     
-    //   glRotatef(30,0,1,0);
-    
     GLUquadricObj *quadratic_15;
     quadratic_15=gluNewQuadric();
     mySolidCylinder(quadratic_15,0.3f,0.5f,1.0f,32,32);
@@ -1001,12 +661,6 @@ void drawHMBB(){
     glTranslatef(1.0f, -3.5f, 0.0f);
     glutSolidSphere(0.3, 120, 120);
     glPopMatrix();
-    
-    
-    // glEnd();
-    
-    
-    
 }
 void display(){
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -1017,6 +671,18 @@ void display(){
     glLightfv(GL_LIGHT1,GL_SPECULAR,whiteLight);
 	glPopMatrix();
     drawobjects(GL_RENDER);
+    
+    //绘制沙滩背景
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texGround);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-100.0f, -10.0f, 20.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-100.0f, -10.0f, -50.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(100.0f, -10.0f, -50.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(100.0f, -10.0f, 20.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
     glutSwapBuffers();
 }
 void specialKeys(int key,int x,int y){
@@ -1082,7 +748,6 @@ void drawobjects(GLenum mode){
     if(mode==GL_SELECT)
         glLoadName(1);   //接下来绘制的对象ID为1
 
- //   glEnable(GL_COLOR_MATERIAL);
 	glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
     glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
     glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
@@ -1091,16 +756,15 @@ void drawobjects(GLenum mode){
     glTranslatef(tra1,0,pz);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
-    drawPDX();
+//    drawPDX();
     glPopMatrix();
-	//glDisable(GL_COLOR_MATERIAL);
     
 	
     glPushMatrix();
     if(mode==GL_SELECT)
         glLoadName(2);   //接下来绘制的对象ID为2
 
-	//glEnable(GL_COLOR_MATERIAL);
+
 	glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
     glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
@@ -1112,94 +776,12 @@ void drawobjects(GLenum mode){
     
     drawHMBB();
     glPopMatrix();
-	//glDisable(GL_COLOR_MATERIAL);
+
     
     
     
 }
 
-void processHits (GLint hits, GLuint buffer[]){
-    GLuint mindepth=0;
-    mindepth=~mindepth;			// GLuint 的最大值
-    
-    // hit 产生的数据链
-    GLuint *ptr, nums, zmin, zmax, name;
-    ptr = buffer;
-    
-    selectedIndex = 0; //初始化为0
-    for (int i = 0; i < hits; i++)
-    {
-        // number of names for this hit
-        // 在本程序中 nums=1
-        nums = *ptr;
-        
-        ptr++;	zmin = *ptr;
-        ptr++;	zmax = *ptr;
-        
-        // 在本程序中 nums=1, 无需循环
-        ptr++;  name = *ptr;
-        
-        // 选择离视点最近的对象
-        if(mindepth>zmin)
-        {
-            mindepth=zmin;
-            selectedIndex=name;
-        }
-        
-        // 下一个 hit
-        ptr++;
-    }
-    
-    cout<<selectedIndex<<endl;
-}
-#define SIZE 512
-void mouse(int button, int state, int x, int y)
-{
-    GLuint selectBuf[SIZE];
-    GLint hits;
-    GLint viewport[4];
-    
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) //鼠标左键按下进入选择模式
-    {
-        glGetIntegerv (GL_VIEWPORT, viewport); //获得当前的viewport,用于gluPickMatrix
-        
-        glSelectBuffer (SIZE, selectBuf);    //设定缓存
-        glRenderMode(GL_SELECT); //进入选择模式
-        
-        glInitNames();  //初始化名称堆栈
-        glPushName(-1); //名称缓冲区中放入id (没有绘制任何对象,所以用-1表示)
-        
-        glMatrixMode (GL_PROJECTION);
-        glPushMatrix (); //保存当前投影矩阵（因为后面重设视景体，把视景体设为鼠标附近）
-        
-        glLoadIdentity (); //把当前投影矩阵置为单位矩阵
-        /* create 2x2 pixel picking region near cursor location */
-        gluPickMatrix ((GLdouble) x, (GLdouble) (viewport[3] - y),
-                       2.0, 2.0, viewport);  //改变视图参数，使得只有靠近鼠标指针的对象位于新的视景体中
-        
-        GLfloat aspectRatio = (GLfloat)W / (GLfloat)H;//计算窗口横纵比
-        
-        if (W<=H)
-            glOrtho(-10.0, 10.0, -10.0/aspectRatio, 10.0/aspectRatio, -10.0, 10.0);
-        else
-            glOrtho(-10.0*aspectRatio, 10.0*aspectRatio, -10.0, 10.0, -10.0, 10.0);
-        
-        
-        drawobjects(GL_SELECT);		//在选择模式下重绘对象，这时候对象拥有ID
-        
-        glMatrixMode (GL_PROJECTION);
-        glPopMatrix ();  //恢复原来的投影矩阵
-        
-        
-        glMatrixMode(GL_MODELVIEW);  //恢复当前矩阵模式为Modelview
-        
-        hits = glRenderMode (GL_RENDER); //退出选择模式，得到击中对象个数
-        cout<<"hits"<<hits<<endl;
-        processHits (hits, selectBuf);   //根据击中对象个数，和击中记录缓存，得到当前选中的对象
-        
-        glutPostRedisplay();
-    }
-}
 void init()
 {
     glClearColor(1.0,1.0,1.0,1.0);
@@ -1215,6 +797,126 @@ void init()
     
 	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+}
+
+int power_of_two(int n)
+{
+    if( n <= 0 )
+        return 0;
+    return (n & (n-1)) == 0;
+}
+GLuint load_texture(const char* file_name)
+{
+    GLint width, height, total_bytes;
+    GLubyte* pixels = 0;
+    GLuint last_texture_ID, texture_ID = 0;
+    
+    // 打开文件，如果失败，返回
+    FILE* pFile = fopen(file_name, "rb");
+    if( pFile == 0 )
+        return 0;
+    
+    // 读取文件中图象的宽度和高度
+    fseek(pFile, 0x0012, SEEK_SET);
+    fread(&width, 4, 1, pFile);
+    fread(&height, 4, 1, pFile);
+    fseek(pFile, BMP_Header_Length, SEEK_SET);
+    
+    // 计算每行像素所占字节数，并根据此数据计算总像素字节数
+    {
+        GLint line_bytes = width * 3;
+        while( line_bytes % 4 != 0 )
+            ++line_bytes;
+        total_bytes = line_bytes * height;
+    }
+    
+    // 根据总像素字节数分配内存
+    pixels = (GLubyte*)malloc(total_bytes);
+    if( pixels == 0 )
+    {
+        fclose(pFile);
+        return 0;
+    }
+    
+    // 读取像素数据
+    if( fread(pixels, total_bytes, 1, pFile) <= 0 )
+    {
+        free(pixels);
+        fclose(pFile);
+        return 0;
+    }
+    
+    // 在旧版本的OpenGL中
+    // 如果图象的宽度和高度不是的整数次方，则需要进行缩放
+    // 这里并没有检查OpenGL版本，出于对版本兼容性的考虑，按旧版本处理
+    // 另外，无论是旧版本还是新版本，
+    // 当图象的宽度和高度超过当前OpenGL实现所支持的最大值时，也要进行缩放
+    {
+        GLint max;
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max);
+        if( !power_of_two(width)
+           || !power_of_two(height)
+           || width > max
+           || height > max )
+        {
+            const GLint new_width = 256;
+            const GLint new_height = 256; // 规定缩放后新的大小为边长的正方形
+            GLint new_line_bytes, new_total_bytes;
+            GLubyte* new_pixels = 0;
+            
+            // 计算每行需要的字节数和总字节数
+            new_line_bytes = new_width * 3;
+            while( new_line_bytes % 4 != 0 )
+                ++new_line_bytes;
+            new_total_bytes = new_line_bytes * new_height;
+            
+            // 分配内存
+            new_pixels = (GLubyte*)malloc(new_total_bytes);
+            if( new_pixels == 0 )
+            {
+                free(pixels);
+                fclose(pFile);
+                return 0;
+            }
+            
+            // 进行像素缩放
+            gluScaleImage(GL_RGB,
+                          width, height, GL_UNSIGNED_BYTE, pixels,
+                          new_width, new_height, GL_UNSIGNED_BYTE, new_pixels);
+            
+            // 释放原来的像素数据，把pixels指向新的像素数据，并重新设置width和height
+            free(pixels);
+            pixels = new_pixels;
+            width = new_width;
+            height = new_height;
+        }
+    }
+    
+    // 分配一个新的纹理编号
+    glGenTextures(1, &texture_ID);
+    if( texture_ID == 0 )
+    {
+        free(pixels);
+        fclose(pFile);
+        return 0;
+    }
+    
+    // 在绑定前，先获得原来绑定的纹理编号，以便在最后进行恢复
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, (GLint*)&last_texture_ID);
+    glBindTexture(GL_TEXTURE_2D, texture_ID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
+                 GL_BGR_EXT, GL_UNSIGNED_BYTE, pixels);
+    glBindTexture(GL_TEXTURE_2D, last_texture_ID);
+    
+    // 之前为pixels分配的内存可在使用glTexImage2D以后释放
+    // 因为此时像素数据已经被OpenGL另行保存了一份（可能被保存到专门的图形硬件中）
+    free(pixels);
+    return texture_ID;
 }
 
 void forward(){
@@ -1480,11 +1182,15 @@ int main(int argc, char * argv[]) {
     // insert code here...
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (600, 600);
+    glutInitWindowSize (600, 500);
     glutInitWindowPosition(200, 0);
     glutCreateWindow("海绵宝宝");
+    texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground3.bmp");
+    texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
+    texHMBB_face_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_back.bmp");
+    texHMBB_cloth_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_front.bmp");
+    texHMBB_cloth_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_back.bmp");
     glutDisplayFunc(display);
-//    glutMouseFunc (mouse);
     glutSpecialFunc(specialKeys);
     glutKeyboardFunc(normal);
     glutReshapeFunc(reshape);
@@ -1516,15 +1222,7 @@ int main(int argc, char * argv[]) {
     
     init();
     glutMainLoop();
-    //cout<<"test"<<endl;
     
     return 0;
-    //cout
     
 }
-
-
-
-
-
-
