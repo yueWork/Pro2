@@ -16,7 +16,7 @@ using namespace std;
 static GLfloat xRot = 0.0f;
 static GLfloat yRot = 0.0f;
 
-static GLfloat s_eye[]={0,0,35.0};
+static GLfloat s_eye[]={0,0,15.0};
 static GLfloat s_at[]={0.0,0.0,1.0};
 static GLfloat s_angle=-90.0;
 //static GLfloat s_angle = -90.0;
@@ -53,6 +53,21 @@ GLfloat hz=0;
 GLfloat pz=0;
 GLfloat hrz=0;
 GLfloat prz=0;
+
+GLfloat hleft=0;
+GLfloat hright=0;
+
+GLfloat hxh=-2.6f;
+GLfloat hyh=2.0f;
+GLfloat hzh=0.0;
+
+GLfloat hxb=-2.8f;
+GLfloat hyb=1.9f;
+GLfloat hzb=0.0;
+int hlzdegree=-100;
+int hlxdegree=0;
+//GLfloat ratio＝0;
+
 int W, H;
 #define BMP_Header_Length 54
 GLuint texGround;
@@ -79,6 +94,7 @@ void reshape(int w,int h)
 {
     W = w;
     H = h;
+
     GLfloat ratio = 1.0f * W/ H;
     
     glMatrixMode(GL_PROJECTION);
@@ -89,12 +105,11 @@ void reshape(int w,int h)
 
     gluPerspective(45,ratio,1,1000);
 
-//    gluLookAt(s_eye[0], s_eye[1], s_eye[2],
-//              s_at[0], s_at[1], s_at[2],
-//              0.0,1.0, 0.0);
-    gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);//30,40
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+    gluLookAt(s_eye[0], s_eye[1], s_eye[2],
+              s_at[0], s_at[1], s_at[2],
+              0.0,1.0, 0.0);
+
+//    gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);//30,40
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -406,29 +421,46 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //左手臂
+    glBegin(GL_POLYGON);
+    glVertex3f(2.501f, -0.6f, -0.8);
+    glVertex3f(2.501f, -0.6f, -0.3);
+    glVertex3f(2.501f, -0.8f, -0.3);
+    glVertex3f(2.501f, -0.8f, -0.8);
+    glEnd();
+
     glColor3ub(255, 255, 255);
     
     glPushMatrix();
-    glTranslatef(-2.6f, 2.0f, 0.0);
+    glTranslatef(hxb,hyb,hzb);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
     
     glColor3ub(253, 247, 62);//黄色
     glPushMatrix();
-    glTranslatef(-3.0f, -0.4f, 0.0f);
+    glTranslatef(-2.7f, 1.8f, 0.0f);
     
-    glRotatef(80, 0, 0, 1);
+    glRotatef(hlxdegree, 1, 0, 0);
+    glRotatef(hlzdegree, 0, 0, 1);
     glRotatef(90,0,1,0);
-    
+
+
     GLUquadricObj *quadratic_17;
     quadratic_17=gluNewQuadric();
     mySolidCylinder(quadratic_17,0.2f,0.2f,2.8f,32,32);
     glPopMatrix();
     
+    float rad=((float)hlzdegree)/180;
+//    cout<<cos(rad*Pi)<<endl;
+    hxh=hxb+2.8*cos(rad*Pi);
+    hyh=hyb+2.8*sin(rad*Pi);
     
+    rad=((float)hlxdegree)/180;
+    hyh=hyh-2.8*(1-cos(rad*Pi));
+    hzh=2.8*sin(rad*Pi);
+    cout<<hxh<<" "<<hyh;
     glColor3ub(253, 247, 62);//黄色
     glPushMatrix();
-    glTranslatef(-3.1f, -0.7f, 0.0);
+    glTranslatef(hxh,hyh,hzh);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
     
@@ -446,6 +478,8 @@ void drawHMBB(){
     
     glRotatef(100, 0, 0, 1);
     glRotatef(90,0,1,0);
+    glRotatef(hright, 1, 0, 0);
+
     
     GLUquadricObj *quadratic_18;
     quadratic_18=gluNewQuadric();
@@ -670,6 +704,12 @@ void display(){
     glLightfv(GL_LIGHT1,GL_DIFFUSE,whiteLight);
     glLightfv(GL_LIGHT1,GL_SPECULAR,whiteLight);
 	glPopMatrix();
+    
+    glLoadIdentity();
+    gluLookAt(s_eye[0], s_eye[1], s_eye[2],
+              s_at[0], s_at[1], s_at[2],
+              0.0,1.0, 0.0);
+    
     drawobjects(GL_RENDER);
     
     //绘制沙滩背景
@@ -696,25 +736,25 @@ void specialKeys(int key,int x,int y){
     {
         rot1-= 12.0;//每按一次左键，旋转2度。
         rot2-=12.0;
-        cout<<"test turn left";
+//        cout<<"test turn left";
     }
     if (key==GLUT_KEY_RIGHT)
     {
         rot1+= 12.0;//每按一次左键，旋转2度。
         rot2+=12.0;                       //每按一次右键，旋转2度。
-        cout<<"test turn right";
+//        cout<<"test turn right";
     }
     float rad =float(PI*s_angle/180.0f);                    //计算SIN和COS函数中需要的参数。
     // 前进,后退请求
     if(key==GLUT_KEY_UP)
     {
         s_eye[0] += 0.5;
-        cout<<"test turn up";
+//        cout<<"test turn up";
     }
     if(key==GLUT_KEY_DOWN)
     {
         s_eye[0]-=0.5;
-        cout<<"test turn down";
+//        cout<<"test turn down";
     }
     glLoadIdentity();
     gluLookAt(s_eye[0], s_eye[1], s_eye[2],
@@ -725,7 +765,7 @@ void specialKeys(int key,int x,int y){
 void normal(unsigned char key,int x,int y){
     if(key==117){
         s_at[1]+=0.5;
-        cout<<"at";
+//        cout<<"at";
     }
     if(key==100){
         s_at[1]-=0.5;
@@ -753,7 +793,7 @@ void drawobjects(GLenum mode){
     glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
 
     glPushMatrix();
-    glTranslatef(tra1,0,pz);
+    glTranslatef(tra1+5.0f,0,pz);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
 //    drawPDX();
@@ -770,17 +810,17 @@ void drawobjects(GLenum mode){
     glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
 	glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
 
-    glTranslatef(tra2-10.0f, 0.0,hz-3.0f);
+    glTranslatef(tra2-15.0f, 0.0,hz-3.0f);
     glRotatef(rot2,0,1,0);
+//    glRotatef(90, 0, 1, 0);
     glScalef(sca2,sca2,sca2);
     
     drawHMBB();
     glPopMatrix();
 
-    
-    
-    
+
 }
+
 
 void init()
 {
@@ -1006,61 +1046,29 @@ void back(){
 }
 
 void go(){
+    
+    rot1=0;
+    rot2=0;
+    
     int count=0;
-    
-    s_eye[0]=0;
-    s_eye[1]=0;
-    s_eye[2]=5;
-    
-    s_at[0]=0;
-    s_at[1]=0;
-    s_at[2]=1;
-    
-    s_angle=-90.0;
-    
-    float rad;
-    while (count<10) {
-        s_at[1]-=0.5;
+    while(count<10){
+        rot1-=10;
+        rot2+=10;
         display();
-//        Sleep(100);
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<20){
-        s_angle+=6;
-        rad =float(Pi*s_angle/180.0f);
-        s_at[0] = float(s_eye[0] + 4*cos(rad));
-        s_at[2] = float(s_eye[2] + 4*sin(rad));
+        hlzdegree-=15;
         
         display();
-//        Sleep(100);
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<30){
-        s_eye[0]-=0.5;
+        hlxdegree+=10;
         display();
-        cout<<"go";
-//        Sleep(100);
-        sleep(1);
-        count++;
-    }
-    while (count<40) {
-        s_angle-=9;
-        rad=float(Pi*s_angle/180.0f);
-        s_at[0]=float(s_eye[0]+4*cos(rad));
-        s_at[2]=float(s_eye[2]+4*sin(rad));
-        
-        display();
-//        Sleep(100);
-        sleep(1);
-        count++;
-    }
-    while(count<50){
-        s_at[1]+=0.5;
-        display();
-//       Sleep(100);
-        sleep(1);
+//        sleep(1);
         count++;
     }
 }
@@ -1182,7 +1190,7 @@ int main(int argc, char * argv[]) {
     // insert code here...
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (600, 500);
+    glutInitWindowSize (1000, 1000);
     glutInitWindowPosition(200, 0);
     glutCreateWindow("海绵宝宝");
     texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground3.bmp");
