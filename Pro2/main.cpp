@@ -772,10 +772,6 @@ void normal(unsigned char key,int x,int y){
     if(key==98){
         s_eye[2]+=1;
     }
-    glLoadIdentity();
-    gluLookAt(s_eye[0], s_eye[1], s_eye[2],
-              s_at[0], s_at[1], s_at[2],
-              0.0,1.0, 0.0);
     display();
 }
 
