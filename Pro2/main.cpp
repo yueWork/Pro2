@@ -721,34 +721,34 @@ void display(){
     glutSwapBuffers();
 }
 void specialKeys(int key,int x,int y){
-    //如果初始角度设置为0则初始面向X轴正方向，设置为-90面向
-    //Z轴负方向，符合默认情况下的设计习惯。
-    
     
     float PI=3.14159f;
     // 旋转请求
     if(key==GLUT_KEY_LEFT)
     {
-        rot1-= 12.0;//每按一次左键，旋转2度。
-        rot2-=12.0;
+        s_eye[0] += 0.5;
+        //        rot1-= 12.0;//每按一次左键，旋转2度。
+//        rot2-=12.0;
 //        cout<<"test turn left";
     }
     if (key==GLUT_KEY_RIGHT)
     {
-        rot1+= 12.0;//每按一次左键，旋转2度。
-        rot2+=12.0;                       //每按一次右键，旋转2度。
+        s_eye[0]-=0.5;
+//        rot1+= 12.0;//每按一次左键，旋转2度。
+//        rot2+=12.0;                       //每按一次右键，旋转2度。
 //        cout<<"test turn right";
     }
     float rad =float(PI*s_angle/180.0f);                    //计算SIN和COS函数中需要的参数。
     // 前进,后退请求
     if(key==GLUT_KEY_UP)
     {
-        s_eye[0] += 0.5;
+        s_eye[1]+=1;
 //        cout<<"test turn up";
     }
     if(key==GLUT_KEY_DOWN)
     {
-        s_eye[0]-=0.5;
+        s_eye[1]-=1;
+        
 //        cout<<"test turn down";
     }
     glLoadIdentity();
@@ -778,6 +778,7 @@ void normal(unsigned char key,int x,int y){
               0.0,1.0, 0.0);
     display();
 }
+
 void drawobjects(GLenum mode){
     
     glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
@@ -1206,16 +1207,16 @@ int main(int argc, char * argv[]) {
     glutInitWindowSize (1000, 600);
     glutInitWindowPosition(200, 0);
     glutCreateWindow("海绵宝宝");
-    texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
-    texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
-    texHMBB_face_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_back.bmp");
-    texHMBB_cloth_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_front.bmp");
-    texHMBB_cloth_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_back.bmp");
-    texHMBB_sock = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_sock.bmp");
-    texFront = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Front.bmp");
-    texLeft = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/left.bmp");
-    texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
-    texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
+    texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
+    texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
+    texHMBB_face_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_back.bmp");
+    texHMBB_cloth_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_front.bmp");
+    texHMBB_cloth_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_back.bmp");
+    texHMBB_sock = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_sock.bmp");
+    texFront = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Front.bmp");
+    texLeft = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/left.bmp");
+    texRight = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Right.bmp");
+    texUp = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Up.bmp");
     glutDisplayFunc(display);
     glutSpecialFunc(specialKeys);
     glutKeyboardFunc(normal);
