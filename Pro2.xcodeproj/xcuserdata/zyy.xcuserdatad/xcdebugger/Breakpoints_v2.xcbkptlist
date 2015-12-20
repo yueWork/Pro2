@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pro2/main.cpp"
-            timestampString = "472126083.322132"
+            timestampString = "472145576.666418"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1070"
-            endingLineNumber = "1070"
-            landmarkName = "normal(unsigned char key,int x,int y)"
+            startingLineNumber = "1081"
+            endingLineNumber = "1081"
+            landmarkName = "go()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

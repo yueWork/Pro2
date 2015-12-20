@@ -65,8 +65,16 @@ GLfloat hzh=0.0;
 GLfloat hxb=-2.8f;
 GLfloat hyb=1.9f;
 GLfloat hzb=0.0;
+GLfloat ballx=0.0f;
+GLfloat bally=0.0f;
+GLfloat ballz=0.0f;
+GLfloat balltempx=0;
+GLfloat balltempy=0;
+GLfloat balltempz=0;
+
 int hlzdegree=-100;
 int hlxdegree=0;
+bool flag=true;
 
 int W, H;
 #define BMP_Header_Length 54
@@ -473,13 +481,34 @@ void drawHMBB(){
     rad=((float)hlxdegree)/180;
     hyh=hyh-2.8*(1-cos(rad*Pi));
     hzh=2.8*sin(rad*Pi);
-    cout<<hxh<<" "<<hyh;
+//    cout<<hxh<<" "<<hyh<<endl;
     glColor3ub(253, 247, 62);//黄色
+    
     glPushMatrix();
     glTranslatef(hxh,hyh,hzh);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
     
+    //左手球
+    glColor3ub(0, 0, 0);
+    if(flag){
+        glPushMatrix();
+        glTranslatef(ballx, bally, ballz);
+        glTranslatef(hxh-0.6f,hyh, hzh);
+        glutSolidSphere(0.4, 400, 400);
+        glPopMatrix();
+        balltempx=hxh-0.6f;
+        balltempy=hyh;
+        balltempz=hzh;
+    }
+    else{
+        
+        glPushMatrix();
+        glTranslatef(ballx, bally, ballz);
+        glTranslatef(balltempx,balltempy, balltempz);
+        glutSolidSphere(0.4, 400, 400);
+        glPopMatrix();
+    }
     //右胳膊
     glColor3ub(255, 255, 255);
     
@@ -770,7 +799,6 @@ void drawobjects(GLenum mode){
     drawHMBB();
     glPopMatrix();
 
-
 }
 
 
@@ -1002,6 +1030,7 @@ void go(){
     rot2=0;
     
     int count=0;
+    int ball_angle=0;
     while(count<10){
         rot1-=10;
         rot2+=10;
@@ -1022,19 +1051,52 @@ void go(){
 //        sleep(1);
         count++;
     }
+    while(count<35){
+        hlxdegree-=10;
+        display();
+        count++;
+        
+    }
+    float rad;
+    while(count<45){
+        ball_angle+=18;
+        rad=((float)ball_angle/180);
+//        cout<<rad<<endl;
+        ballz=10-10*cos(rad*Pi);
+        bally=5*sin(rad*Pi);
+        flag=false;
+        
+        hlxdegree+=13;
+//        bally+=0.5f;
+        display();
+//        sleep(1);
+        count++;
+    }
+    
 }
 void recover(){
     //    s_eye[]={0,0,5.0};
     //    s_at[]={0.0,0.0,1.0};
     s_eye[0]=0;
     s_eye[1]=0;
-    s_eye[2]=5;
+    s_eye[2]=15;
     
     s_at[0]=0;
     s_at[1]=0;
     s_at[2]=1;
     
+//    s_eye[]={0,0,15.0};
+//    static GLfloat s_at[]={0.0,0.0,1.0};
     s_angle=-90.0;
+    rot1=0;
+    rot2=0;
+    hlzdegree=-100;
+    hlxdegree=0;
+    ballx=0;
+    bally=0;
+    ballz=0;
+    flag=true;
+    
 }
 
 void light(){
