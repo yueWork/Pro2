@@ -16,7 +16,7 @@ using namespace std;
 static GLfloat xRot = 0.0f;
 static GLfloat yRot = 0.0f;
 
-static GLfloat s_eye[]={0,0,15.0};
+static GLfloat s_eye[]={0,0,25.0};
 static GLfloat s_at[]={0.0,0.0,1.0};
 static GLfloat s_angle=-90.0;
 //static GLfloat s_angle = -90.0;
@@ -25,8 +25,9 @@ const int n=2400;
 const GLfloat Pi = 3.1415926536f;
 const   float   DEG2RAD   =   3.14159/180;
 
-const GLfloat lightPosition1[] = {10.0,10.0,10.0,0.0};
+const GLfloat lightPosition1[] = {-10.0,10.0,50.0,1.0};
 const GLfloat whiteLight[] = {0.8,0.8,0.8,1.0};
+const GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };  //环境光
 GLfloat matSpecular [] = {0.3,0.3,0.3,1.0};
 GLfloat matShininess [] = {20.0};
 GLfloat matEmission [] = {0.3,0.3,0.3,1.0};
@@ -66,7 +67,6 @@ GLfloat hyb=1.9f;
 GLfloat hzb=0.0;
 int hlzdegree=-100;
 int hlxdegree=0;
-//GLfloat ratio＝0;
 
 int W, H;
 #define BMP_Header_Length 54
@@ -75,6 +75,11 @@ GLuint texHMBB_face_front;
 GLuint texHMBB_face_back;
 GLuint texHMBB_cloth_front;
 GLuint texHMBB_cloth_back;
+GLuint texHMBB_sock;
+GLuint texFront;
+GLuint texLeft;
+GLuint texRight;
+GLuint texUp;
 
 GLuint selectedIndex=1;	 //击中对象的ID
 
@@ -109,7 +114,7 @@ void reshape(int w,int h)
               s_at[0], s_at[1], s_at[2],
               0.0,1.0, 0.0);
 
-//    gluLookAt(0, 0, 20, 0, 0, 0, 0, 1, 0);//30,40
+//    gluLookAt(0, 0, 40, 0, 0, 0, 0, 1, 0);//30,40
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -309,11 +314,13 @@ void drawPDX()
     glPopMatrix();
 }
 void drawHMBB(){
-    
+    glColor4f(1.0f,1.0f,1.0f,1.0f);  //创建图形，alpha值为0.5f，表示半透明
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
     //身子前面
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_front);
     glBegin(GL_QUADS);
+    glNormal3f(0.0, 0.0, 1.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(-3.0f,5.0f, 1.0f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f( 3.0f,5.0f, 1.0f);
@@ -325,6 +332,7 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
+    glNormal3f(0.0, 0.0, -1.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,-1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(-3.0f,5.0f,-1.0f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f( 3.0f,5.0f,-1.0f);
@@ -336,7 +344,8 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,-1.0f);
+    glNormal3f(-1.0, 0.0, 0.0);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f, -1.0f);
     glTexCoord2f(0.5f, 1.0f); glVertex3f(-3.0f,5.0f,-1.0f);
     glTexCoord2f(0.5f, 0.0f); glVertex3f(-3.0f,5.0f, 1.0f);
@@ -347,6 +356,7 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
+    glNormal3f(1.0, 0.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,0.0f,1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
     glTexCoord2f(0.5f, 1.0f); glVertex3f(3.0f,5.0f,-1.0f);
@@ -358,6 +368,7 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
+    glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-3.0f,5.0f,1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(3.0f,5.0f, 1.0f);
     glTexCoord2f(0.5f, 1.0f); glVertex3f(3.0f,5.0f,-1.0f);
@@ -369,6 +380,7 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
+    glNormal3f(0.0, -1.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,-1.2f, 1.0f);
     glTexCoord2f(0.5f, 1.0f); glVertex3f(2.5f,-1.2f,-1.0f);
@@ -380,6 +392,7 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_front);
     glBegin(GL_QUADS);
+    glNormal3f(0.0, 0.0, 1.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,1.0f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f,0.0f, 1.0f);
@@ -391,6 +404,7 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
     glBegin(GL_QUADS);
+    glNormal3f(0.0, 0.0, -1.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,-1.0f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
@@ -402,6 +416,7 @@ void drawHMBB(){
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
     glBegin(GL_QUADS);
+    glNormal3f(-1.0, 0.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,-1.0f);
     glTexCoord2f(0.5f, 1.0f); glVertex3f(-2.5f,0.0f,1.0f);
@@ -411,6 +426,7 @@ void drawHMBB(){
     
     //衣服右面
     glEnable(GL_TEXTURE_2D);
+    glNormal3f(1.0, 0.0, 0.0);
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,-1.2f,-1.0f);
@@ -479,21 +495,17 @@ void drawHMBB(){
     glRotatef(100, 0, 0, 1);
     glRotatef(90,0,1,0);
     glRotatef(hright, 1, 0, 0);
-
     
     GLUquadricObj *quadratic_18;
     quadratic_18=gluNewQuadric();
     mySolidCylinder(quadratic_18,0.2f,0.2f,2.8f,32,32);
     glPopMatrix();
     
-    
     glColor3ub(253, 247, 62);//黄色
     glPushMatrix();
     glTranslatef(3.1f, -0.7f, 0.0);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
-    
-    
     
     //左裤子
     glColor3ub(175, 100, 0);
@@ -502,14 +514,9 @@ void drawHMBB(){
     glTranslatef(-1.0f, -1.1f, 0.0f);
     
     glRotatef(90,1,0,0);
-    glEnable(GL_TEXTURE_2D);
-    
     GLUquadricObj *quadratic_1;
     quadratic_1=gluNewQuadric();
-    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
-    gluQuadricTexture(quadratic_1, GL_TRUE);
     mySolidCylinder(quadratic_1,0.7f,0.7f,0.5f,32,32);
-    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
     
     //右裤子
@@ -525,135 +532,31 @@ void drawHMBB(){
     //左腿
     glColor3ub(253, 247, 62);//黄色
     glPushMatrix();
-    glTranslatef(-1.0f, -1.6f, 0.0f);
+    glTranslatef(-1.0f, -3.4f, 0.0f);
     
-    glRotatef(90,1,0,0);
+    glRotatef(-90,1,0,0);
     
     GLUquadricObj *quadratic_3;
     quadratic_3=gluNewQuadric();
-    mySolidCylinder(quadratic_3,0.3f,0.3f,0.7f,32,32);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
+    gluQuadricTexture(quadratic_3, GL_TRUE);
+    mySolidCylinder(quadratic_3,0.2f,0.2f,1.85f,32,32);
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
     //右腿
     glColor3ub(253, 247, 62);//黄色
     glPushMatrix();
-    glTranslatef(1.0f, -1.6f, 0.0f);
-    
-    glRotatef(90,1,0,0);
+    glTranslatef(1.0f, -3.4f, 0.0f);
+    glRotatef(-90,1,0,0);
     
     GLUquadricObj *quadratic_4;
     quadratic_4=gluNewQuadric();
-    mySolidCylinder(quadratic_4,0.3f,0.3f,0.7f,32,32);
-    glPopMatrix();
-    //左袜子
-    glColor3ub(255, 255, 255);//
-    glPushMatrix();
-    glTranslatef(-1.0f, -2.3f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_5;
-    quadratic_5=gluNewQuadric();
-    mySolidCylinder(quadratic_5,0.3f,0.3f,0.2f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(62, 108, 186);//
-    glPushMatrix();
-    glTranslatef(-1.0f, -2.5f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_6;
-    quadratic_6=gluNewQuadric();
-    mySolidCylinder(quadratic_6,0.3f,0.3f,0.1f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(255, 255, 255);//
-    glPushMatrix();
-    glTranslatef(-1.0f, -2.6f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_7;
-    quadratic_7=gluNewQuadric();
-    mySolidCylinder(quadratic_7,0.3f,0.3f,0.15f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(220, 0, 13);//
-    glPushMatrix();
-    glTranslatef(-1.0f, -2.75f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_8;
-    quadratic_8=gluNewQuadric();
-    mySolidCylinder(quadratic_8,0.3f,0.3f,0.1f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(255, 255, 255);//
-    glPushMatrix();
-    glTranslatef(-1.0f, -2.85f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_9;
-    quadratic_9=gluNewQuadric();
-    mySolidCylinder(quadratic_9,0.3f,0.3f,0.6f,32,32);
-    glPopMatrix();
-    
-    //右袜子
-    glColor3ub(255, 255, 255);//
-    glPushMatrix();
-    glTranslatef(1.0f, -2.3f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_10;
-    quadratic_10=gluNewQuadric();
-    mySolidCylinder(quadratic_10,0.3f,0.3f,0.2f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(62, 108, 186);//
-    glPushMatrix();
-    glTranslatef(1.0f, -2.5f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_11;
-    quadratic_11=gluNewQuadric();
-    mySolidCylinder(quadratic_11,0.3f,0.3f,0.1f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(255, 255, 255);//
-    glPushMatrix();
-    glTranslatef(1.0f, -2.6f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_12;
-    quadratic_12=gluNewQuadric();
-    mySolidCylinder(quadratic_12,0.3f,0.3f,0.15f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(220, 0, 13);//
-    glPushMatrix();
-    glTranslatef(1.0f, -2.75f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_13;
-    quadratic_13=gluNewQuadric();
-    mySolidCylinder(quadratic_13,0.3f,0.3f,0.1f,32,32);
-    glPopMatrix();
-    
-    glColor3ub(255, 255, 255);//
-    glPushMatrix();
-    glTranslatef(1.0f, -2.85f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_14;
-    quadratic_14=gluNewQuadric();
-    mySolidCylinder(quadratic_14,0.3f,0.3f,0.6f,32,32);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
+    gluQuadricTexture(quadratic_4, GL_TRUE);
+    mySolidCylinder(quadratic_4,0.2f,0.2f,1.85f,32,32);
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
     
     //左脚
@@ -699,6 +602,7 @@ void drawHMBB(){
 void display(){
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
+    glEnable(GL_LIGHT1);
 	glRotated(spin,1.0,0.0,0.0);
 	glLightfv(GL_LIGHT1,GL_POSITION,lightPosition1);
     glLightfv(GL_LIGHT1,GL_DIFFUSE,whiteLight);
@@ -712,14 +616,76 @@ void display(){
     
     drawobjects(GL_RENDER);
     
+    
     //绘制沙滩背景
+    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texGround);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-100.0f, -10.0f, 20.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-100.0f, -10.0f, -50.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(100.0f, -10.0f, -50.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(100.0f, -10.0f, 20.0f);
+    glNormal3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-50.0f, -3.8f, 20.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-50.0f, -3.8f, -50.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(50.0f, -3.8f, -50.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(50.0f, -3.8f, 20.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    //场景上面
+    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+    
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texUp);
+    glBegin(GL_QUADS);
+    glNormal3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-50.0f, 30.0f, 20.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-50.0f, 30.0f, -50.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(50.0f, 30.0f, -50.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(50.0f, 30.0f, 20.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    //场景前面
+    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+    
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texFront);
+    glBegin(GL_QUADS);
+    glNormal3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-50.0f, -3.8f, -50.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-50.0f, 30.0f, -50.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(50.0f, 30.0f, -50.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(50.0f, -3.8f, -50.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    //场景右面
+    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+    
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texRight);
+    glBegin(GL_QUADS);
+    glNormal3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(50.0f, -3.8f, -50.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(50.0f, 30.0f, -50.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(50.0f, 30.0f, 20.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(50.0f, -3.8f, 20.0f);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+    
+    //场景左面
+    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+    
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texLeft);
+    glBegin(GL_QUADS);
+    glNormal3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-50.0f, -3.8f, 20.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-50.0f, 30.0f, 20.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-50.0f, 30.0f, -50.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-50.0f, -3.8f, -50.0f);
     glEnd();
     glDisable(GL_TEXTURE_2D);
 
@@ -785,10 +751,7 @@ void normal(unsigned char key,int x,int y){
 }
 void drawobjects(GLenum mode){
     
-    if(mode==GL_SELECT)
-        glLoadName(1);   //接下来绘制的对象ID为1
-
-	glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
     glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
     glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
 
@@ -796,25 +759,14 @@ void drawobjects(GLenum mode){
     glTranslatef(tra1+5.0f,0,pz);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
-//    drawPDX();
+    drawPDX();
     glPopMatrix();
     
 	
     glPushMatrix();
-    if(mode==GL_SELECT)
-        glLoadName(2);   //接下来绘制的对象ID为2
-
-
-	glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
-    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
-	glMaterialfv(GL_FRONT,GL_SHININESS,mat_shininess);
-
     glTranslatef(tra2-15.0f, 0.0,hz-3.0f);
     glRotatef(rot2,0,1,0);
-//    glRotatef(90, 0, 1, 0);
     glScalef(sca2,sca2,sca2);
-    
     drawHMBB();
     glPopMatrix();
 
@@ -833,7 +785,6 @@ void init()
 	glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
 
-    glEnable(GL_LIGHT1);
     
 	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -948,7 +899,7 @@ GLuint load_texture(const char* file_name)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODELVIEW);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
                  GL_BGR_EXT, GL_UNSIGNED_BYTE, pixels);
     glBindTexture(GL_TEXTURE_2D, last_texture_ID);
@@ -1190,14 +1141,19 @@ int main(int argc, char * argv[]) {
     // insert code here...
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize (1000, 1000);
+    glutInitWindowSize (1000, 600);
     glutInitWindowPosition(200, 0);
     glutCreateWindow("海绵宝宝");
-    texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground3.bmp");
+    texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
     texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
     texHMBB_face_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_back.bmp");
     texHMBB_cloth_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_front.bmp");
     texHMBB_cloth_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_back.bmp");
+    texHMBB_sock = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_sock.bmp");
+    texFront = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Front.bmp");
+    texLeft = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/left.bmp");
+    texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
+    texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
     glutDisplayFunc(display);
     glutSpecialFunc(specialKeys);
     glutKeyboardFunc(normal);
