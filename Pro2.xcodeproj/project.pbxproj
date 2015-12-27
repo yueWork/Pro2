@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8AAC8F581C2FC5EE0027A53A /* math3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AAC8F561C2FC5EE0027A53A /* math3d.cpp */; };
 		8AE64C261BEF3EE900F22159 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8AE64C251BEF3EE900F22159 /* main.cpp */; };
 		8AE64C2D1BEF3F7E00F22159 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE64C2C1BEF3F7E00F22159 /* OpenGL.framework */; };
 		8AE64C301BEF3FA500F22159 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE64C2F1BEF3FA500F22159 /* GLUT.framework */; };
@@ -25,6 +26,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8AAC8F551C2FC5A50027A53A /* math3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = math3d.h; sourceTree = "<group>"; };
+		8AAC8F561C2FC5EE0027A53A /* math3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = math3d.cpp; sourceTree = "<group>"; };
 		8AE64C221BEF3EE900F22159 /* Pro2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Pro2; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE64C251BEF3EE900F22159 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		8AE64C2C1BEF3F7E00F22159 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = ../../../../../../System/Library/Frameworks/OpenGL.framework; sourceTree = "<group>"; };
@@ -66,6 +69,8 @@
 				8AE64C2F1BEF3FA500F22159 /* GLUT.framework */,
 				8AE64C2C1BEF3F7E00F22159 /* OpenGL.framework */,
 				8AE64C251BEF3EE900F22159 /* main.cpp */,
+				8AAC8F551C2FC5A50027A53A /* math3d.h */,
+				8AAC8F561C2FC5EE0027A53A /* math3d.cpp */,
 			);
 			path = Pro2;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AAC8F581C2FC5EE0027A53A /* math3d.cpp in Sources */,
 				8AE64C261BEF3EE900F22159 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +251,7 @@
 				8AE64C2B1BEF3EE900F22159 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
