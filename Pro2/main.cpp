@@ -189,7 +189,7 @@ void SetupRC()
     //计算投影矩阵
     m3dMakePlanarShadowMatrix(shadowMat, vPlaneEquation, lightPosition1);
 }
-void drawPDX()
+void drawPDX(int i)
 {
     //眉毛
     glColor3ub(0,0,0);
@@ -218,7 +218,10 @@ void drawPDX()
     
     
     //眼珠
-    glColor3ub(255,255,255);
+    if (i == 0) {
+        glColor3ub(255,255,255);
+    }else
+        glColor3ub(0, 0, 0);
     glPushMatrix();
     glScalef(1, 1.2, 1);
     glTranslatef(-0.5, 2.8, 1);
@@ -244,7 +247,10 @@ void drawPDX()
     glutSolidSphere(0.2, 200, 200);
     glPopMatrix();
     //上身
-    glColor3ub(249, 126, 128);
+    if (i == 0) {
+        glColor3ub(249, 126, 128);
+    }else
+        glColor3ub(0, 0, 0);
     GLdouble eqn0 [4]={0.0,-1.0,0.0,5};
     glClipPlane(GL_CLIP_PLANE0,eqn0);
     glEnable(GL_CLIP_PLANE0);
@@ -289,7 +295,10 @@ void drawPDX()
     glPopMatrix();
     
     //下身
-    glColor3ub(165, 216, 25);
+    if (i == 0) {
+        glColor3ub(165, 216, 25);
+    }else
+        glColor3ub(0, 0, 0);
     GLdouble eqn [4]={0.0,-1.0,0.0,0.0};
     glClipPlane(GL_CLIP_PLANE0,eqn);
     glEnable(GL_CLIP_PLANE0);
@@ -315,7 +324,10 @@ void drawPDX()
     mySolidCylinder(quadratic_20,0.5f,0.5f,0.8f,200,200);
     glPopMatrix();
     //脚
-    glColor3ub(249, 126, 128);
+    if (i == 0) {
+        glColor3ub(249, 126, 128);
+    }else
+        glColor3ub(0, 0, 0);
     glPushMatrix();
     glTranslatef(-1.1, -2.7, 0);
     glRotatef(90, 1, 0, 0);
@@ -327,7 +339,10 @@ void drawPDX()
     glDisable(GL_CLIP_PLANE0);
     glPopMatrix();
     
-    glColor3ub(249, 126, 128);
+    if (i == 0) {
+        glColor3ub(249, 126, 128);
+    }else
+        glColor3ub(0, 0, 0);
     glPushMatrix();
     glTranslatef(1.1, -2.7, 0);
     glRotatef(90, 1, 0, 0);
@@ -338,155 +353,14 @@ void drawPDX()
     glDisable(GL_CLIP_PLANE0);
     glPopMatrix();
 }
-void drawPDX_shadow()
-{
-    //眉毛
-    glColor3ub(0,0,0);
-    glPushMatrix();
-    glTranslatef(-0.55,4.1, 0.6);
-    glRotatef(10, 0, 0, 1);
-    glScalef(1, 0.5, 1);
-    glutSolidCube(0.5);
-    glPopMatrix();
+void drawHMBB(int i){
     
-    glColor3ub(0,0,0);
-    glPushMatrix();
-    glTranslatef(0.55,4.1, 0.6);
-    glRotatef(-10, 0, 0, 1);
-    glScalef(1, 0.5, 1);
-    glutSolidCube(0.5);
-    glPopMatrix();
-    
-    //嘴
-    glColor3ub(0,0,0);
-    glPushMatrix();
-    glTranslatef(0.6, -1.2 , 2.49);
-    glRotatef(-15.1, 1, 0, 0);
-    DrawCurve(0, 4, 0, 1, 0.5, 190, 280);
-    glPopMatrix();
-    
-    
-    //眼珠
-    glPushMatrix();
-    glScalef(1, 1.2, 1);
-    glTranslatef(-0.5, 2.8, 1);
-    glutSolidSphere(0.4, 200, 200);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glScalef(1, 1.2, 1);
-    glTranslatef(0.5, 2.8, 1);
-    glutSolidSphere(0.4, 200, 200);
-    glPopMatrix();
-    
-    //黑色
-    glColor3ub(0,0,0);
-    glPushMatrix();
-    glTranslatef(0.5, 3.4, 1.3);
-    glutSolidSphere(0.2, 200, 200);
-    glPopMatrix();
-    
-    glColor3ub(0,0,0);
-    glPushMatrix();
-    glTranslatef(-0.5, 3.4, 1.3);
-    glutSolidSphere(0.2, 200, 200);
-    glPopMatrix();
-    //上身
-    GLdouble eqn0 [4]={0.0,-1.0,0.0,5};
-    glClipPlane(GL_CLIP_PLANE0,eqn0);
-    glEnable(GL_CLIP_PLANE0);
-    glPushMatrix();
-    glRotatef(-90, 1, 0, 0);
-    glutSolidCone(2.5, 6, 200, 200);
-    glPopMatrix();
-    glDisable(GL_CLIP_PLANE0);
-    
-    glPushMatrix();
-    glTranslatef(0, 4.72, 0);
-    glutSolidSphere(0.5, 200, 200);
-    glPopMatrix();
-    //手
-    
-    glPushMatrix();
-    glTranslatef(1.85, 1.5, 0);
-    glRotatef(90, 0, 1, 0);
-    glRotatef(-20, 1, 0, 0);
-    GLUquadricObj *quadratic_21;
-    quadratic_21=gluNewQuadric();
-    mySolidCylinder(quadratic_21,0.6f,0.1f,1.5f,200,200);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(3.1, 1.96, 0);
-    glutSolidSphere(0.18, 200, 200);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(-1.85, 1.5, 0);
-    glRotatef(90, 0, 1, 0);
-    glRotatef(200, 1, 0, 0);
-    GLUquadricObj *quadratic_22;
-    quadratic_22=gluNewQuadric();
-    mySolidCylinder(quadratic_22,0.6f,0.1f,1.5f,200,200);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(-3.1, 1.96, 0);
-    glutSolidSphere(0.18, 200, 200);
-    glPopMatrix();
-    
-    //下身
-    GLdouble eqn [4]={0.0,-1.0,0.0,0.0};
-    glClipPlane(GL_CLIP_PLANE0,eqn);
-    glEnable(GL_CLIP_PLANE0);
-    glutSolidSphere(2.5,200,200);
-    //截完了之后，再撤消,防止对其他部分产生影响。
-    glDisable(GL_CLIP_PLANE0);
-    //腿
-    glPushMatrix();
-    glTranslatef(-1.0f, -2.0f, 0.0f);
-    glRotatef(90, 1, 0, 0);
-    glRotatef(-10, 0, 1, 0);
-    GLUquadricObj *quadratic_19;
-    quadratic_19=gluNewQuadric();
-    mySolidCylinder(quadratic_19,0.5f,0.5f,0.8f,200,200);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(1.0f, -2.0f, 0.0f);
-    glRotatef(90, 1, 0, 0);
-    glRotatef(10, 0, 1, 0);
-    GLUquadricObj *quadratic_20;
-    quadratic_20=gluNewQuadric();
-    mySolidCylinder(quadratic_20,0.5f,0.5f,0.8f,200,200);
-    glPopMatrix();
-    //脚
-    glPushMatrix();
-    glTranslatef(-1.1, -2.7, 0);
-    glRotatef(90, 1, 0, 0);
-    glRotatef(-10, 0, 1, 0);
-    GLdouble eqn2 [4]={0.0,0.0,-1.0,0.8};
-    glClipPlane(GL_CLIP_PLANE0,eqn2);
-    glEnable(GL_CLIP_PLANE0);
-    glutSolidCone(0.45,1.0,200, 200);
-    glDisable(GL_CLIP_PLANE0);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(1.1, -2.7, 0);
-    glRotatef(90, 1, 0, 0);
-    glRotatef(10, 0, 1, 0);
-    glClipPlane(GL_CLIP_PLANE0,eqn2);
-    glEnable(GL_CLIP_PLANE0);
-    glutSolidCone(0.45,1.0,200, 200);
-    glDisable(GL_CLIP_PLANE0);
-    glPopMatrix();
-}
-void drawHMBB(){
-    glColor4f(1.0f,1.0f,1.0f,1.0f);  //创建图形，alpha值为0.5f，表示半透明
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
     //身子前面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glColor4f(1.0f,1.0f,1.0f,1.0f);  //创建图形，alpha值为0.5f，表示半透明
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_front);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 0.0, 1.0);
@@ -498,7 +372,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //身子后面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 0.0, -1.0);
@@ -510,7 +386,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //身子左面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
     glNormal3f(-1.0, 0.0, 0.0);
@@ -522,7 +400,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //身子右面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
     glNormal3f(1.0, 0.0, 0.0);
@@ -534,7 +414,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //身子上面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 1.0, 0.0);
@@ -546,7 +428,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //身子下面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
     glBegin(GL_QUADS);
     glNormal3f(0.0, -1.0, 0.0);
@@ -558,7 +442,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //衣服前面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_front);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 0.0, 1.0);
@@ -570,7 +456,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //衣服后面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 0.0, -1.0);
@@ -582,7 +470,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //衣服左面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
     glBegin(GL_QUADS);
     glNormal3f(-1.0, 0.0, 0.0);
@@ -594,7 +484,9 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //衣服右面
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glNormal3f(1.0, 0.0, 0.0);
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
     glBegin(GL_QUADS);
@@ -606,21 +498,17 @@ void drawHMBB(){
     glDisable(GL_TEXTURE_2D);
     
     //左手臂
-    glBegin(GL_POLYGON);
-    glVertex3f(2.501f, -0.6f, -0.8);
-    glVertex3f(2.501f, -0.6f, -0.3);
-    glVertex3f(2.501f, -0.8f, -0.3);
-    glVertex3f(2.501f, -0.8f, -0.8);
-    glEnd();
-
-    glColor3ub(255, 255, 255);
-    
+    if (i == 0) {
+        glColor3ub(255, 255, 255);
+    }else
+        glColor3ub(0, 0, 0);
     glPushMatrix();
     glTranslatef(hxb,hyb,hzb);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
-    
-    glColor3ub(253, 247, 62);//黄色
+    if (i == 0) {
+        glColor3ub(253, 247, 62);//黄色
+    }
     glPushMatrix();
     glTranslatef(-2.7f, 1.8f, 0.0f);
     
@@ -643,7 +531,9 @@ void drawHMBB(){
     hyh=hyh-2.8*(1-cos(rad*Pi));
     hzh=2.8*sin(rad*Pi);
 //    cout<<hxh<<" "<<hyh<<endl;
-    glColor3ub(253, 247, 62);//黄色
+    if (i == 0) {
+        glColor3ub(253, 247, 62);//黄色
+    }
     
     glPushMatrix();
     glTranslatef(hxh,hyh,hzh);
@@ -655,9 +545,11 @@ void drawHMBB(){
         glPushMatrix();
         glTranslatef(ballx, bally, ballz);
         glTranslatef(hxh-0.6f,hyh, hzh);
-        glColor4f(1.0f,1.0f,1.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
-        glEnable(GL_TEXTURE_2D);
+        if (i == 0) {
+            glColor4f(1.0f,1.0f,1.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
+            glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+            glEnable(GL_TEXTURE_2D);
+        }
         glBindTexture(GL_TEXTURE_2D, texBall);
         glutSolidSphere(0.5, 400, 400);
         glDisable(GL_TEXTURE_2D);
@@ -675,14 +567,19 @@ void drawHMBB(){
         glPopMatrix();
     }
     //右胳膊
-    glColor3ub(255, 255, 255);
+    if (i == 0) {
+       glColor3ub(255, 255, 255);
+    }else
+        glColor3ub(0, 0, 0);
     
     glPushMatrix();
     glTranslatef(2.6f, 2.0f, 0.0);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
     
-    glColor3ub(253, 247, 62);//黄色
+    if (i == 0) {
+        glColor3ub(253, 247, 62);//黄色
+    }
     glPushMatrix();
     glTranslatef(3.0f, -0.4f, 0.0f);
     
@@ -695,15 +592,18 @@ void drawHMBB(){
     mySolidCylinder(quadratic_18,0.2f,0.2f,2.8f,32,32);
     glPopMatrix();
     
-    glColor3ub(253, 247, 62);//黄色
+    if (i == 0) {
+        glColor3ub(253, 247, 62);//黄色
+    }
     glPushMatrix();
     glTranslatef(3.1f, -0.7f, 0.0);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
     
     //左裤子
-    glColor3ub(175, 100, 0);
-    
+    if (i == 0) {
+         glColor3ub(175, 100, 0);
+    }
     glPushMatrix();
     glTranslatef(-1.0f, -1.1f, 0.0f);
     
@@ -724,7 +624,9 @@ void drawHMBB(){
     mySolidCylinder(quadratic_2,0.7f,0.7f,0.5f,32,32);
     glPopMatrix();
     //左腿
-    glColor3ub(253, 247, 62);//黄色
+    if (i == 0) {
+        glColor3ub(253, 247, 62);//黄色
+    }
     glPushMatrix();
     glTranslatef(-1.0f, -3.4f, 0.0f);
     
@@ -732,21 +634,27 @@ void drawHMBB(){
     
     GLUquadricObj *quadratic_3;
     quadratic_3=gluNewQuadric();
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
     gluQuadricTexture(quadratic_3, GL_TRUE);
     mySolidCylinder(quadratic_3,0.2f,0.2f,1.85f,32,32);
     glDisable(GL_TEXTURE_2D);
     glPopMatrix();
     //右腿
-    glColor3ub(253, 247, 62);//黄色
+    if (i == 0) {
+        glColor3ub(253, 247, 62);//黄色
+    }
     glPushMatrix();
     glTranslatef(1.0f, -3.4f, 0.0f);
     glRotatef(-90,1,0,0);
     
     GLUquadricObj *quadratic_4;
     quadratic_4=gluNewQuadric();
-    glEnable(GL_TEXTURE_2D);
+    if (i == 0) {
+        glEnable(GL_TEXTURE_2D);
+    }
     glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
     gluQuadricTexture(quadratic_4, GL_TRUE);
     mySolidCylinder(quadratic_4,0.2f,0.2f,1.85f,32,32);
@@ -754,7 +662,9 @@ void drawHMBB(){
     glPopMatrix();
     
     //左脚
-    glColor3ub(0,0,0);//
+    if (i == 0) {
+        glColor3ub(0,0,0);
+    }
     glPushMatrix();
     glTranslatef(-1.0f, -3.5f, 0.0f);
     
@@ -773,280 +683,9 @@ void drawHMBB(){
     glutSolidSphere(0.3, 120, 120);
     glPopMatrix();
     //右脚
-    glColor3ub(0,0,0);//
-    glPushMatrix();
-    glTranslatef(1.0f, -3.5f, 0.0f);
-    
-    
-    GLUquadricObj *quadratic_16;
-    quadratic_16=gluNewQuadric();
-    mySolidCylinder(quadratic_16,0.3f,0.5f,1.0f,32,32);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(1.0f, -3.5f, 1.0f);
-    glutSolidSphere(0.5, 120, 120);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(1.0f, -3.5f, 0.0f);
-    glutSolidSphere(0.3, 120, 120);
-    glPopMatrix();
-}
-void drawHMBB_shadow(){
-    //身子前面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_face_front);
-    glBegin(GL_QUADS);
-    glNormal3f(0.0, 0.0, 1.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-3.0f,5.0f, 1.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 3.0f,5.0f, 1.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,0.0f, 1.0f);
-    glEnd();
-    
-    //身子后面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
-    glBegin(GL_QUADS);
-    glNormal3f(0.0, 0.0, -1.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,-1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-3.0f,5.0f,-1.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f( 3.0f,5.0f,-1.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,0.0f,-1.0f);
-    glEnd();
-    
-    //身子左面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
-    glBegin(GL_QUADS);
-    glNormal3f(-1.0, 0.0, 0.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f, -1.0f);
-    glTexCoord2f(0.5f, 1.0f); glVertex3f(-3.0f,5.0f,-1.0f);
-    glTexCoord2f(0.5f, 0.0f); glVertex3f(-3.0f,5.0f, 1.0f);
-    glEnd();
-    
-    //身子右面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
-    glBegin(GL_QUADS);
-    glNormal3f(1.0, 0.0, 0.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,0.0f,1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
-    glTexCoord2f(0.5f, 1.0f); glVertex3f(3.0f,5.0f,-1.0f);
-    glTexCoord2f(0.5f, 0.0f); glVertex3f(3.0f,5.0f, 1.0f);
-    glEnd();
-    
-    //身子上面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
-    glBegin(GL_QUADS);
-    glNormal3f(0.0, 1.0, 0.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-3.0f,5.0f,1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(3.0f,5.0f, 1.0f);
-    glTexCoord2f(0.5f, 1.0f); glVertex3f(3.0f,5.0f,-1.0f);
-    glTexCoord2f(0.5f, 0.0f); glVertex3f(-3.0f,5.0f,-1.0f);
-    glEnd();
-    
-    //身子下面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
-    glBegin(GL_QUADS);
-    glNormal3f(0.0, -1.0, 0.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,-1.2f, 1.0f);
-    glTexCoord2f(0.5f, 1.0f); glVertex3f(2.5f,-1.2f,-1.0f);
-    glTexCoord2f(0.5f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
-    glEnd();
-    
-    //衣服前面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_front);
-    glBegin(GL_QUADS);
-    glNormal3f(0.0, 0.0, 1.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,1.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f,0.0f, 1.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,-1.2f,1.0f);
-    glEnd();
-    
-    //衣服后面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
-    glBegin(GL_QUADS);
-    glNormal3f(0.0, 0.0, -1.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,-1.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(2.5f,-1.2f,-1.0f);
-    glEnd();
-    
-    //衣服左面
-    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
-    glBegin(GL_QUADS);
-    glNormal3f(-1.0, 0.0, 0.0);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,0.0f,-1.0f);
-    glTexCoord2f(0.5f, 1.0f); glVertex3f(-2.5f,0.0f,1.0f);
-    glTexCoord2f(0.5f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
-    glEnd();
-    
-    //衣服右面
-    glNormal3f(1.0, 0.0, 0.0);
-    glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,-1.2f,-1.0f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
-    glTexCoord2f(0.5f, 1.0f); glVertex3f(2.5f,0.0f,1.0f);
-    glTexCoord2f(0.5f, 0.0f); glVertex3f(2.5f,-1.2f,1.0f);
-    glEnd();
-    
-    glColor3ub(0, 0, 0);
-    //左手臂
-    glBegin(GL_POLYGON);
-    glVertex3f(2.501f, -0.6f, -0.8);
-    glVertex3f(2.501f, -0.6f, -0.3);
-    glVertex3f(2.501f, -0.8f, -0.3);
-    glVertex3f(2.501f, -0.8f, -0.8);
-    glEnd();
-    
-    
-    glPushMatrix();
-    glTranslatef(hxb,hyb,hzb);
-    glutSolidSphere(0.4, 120, 120);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(-2.7f, 1.8f, 0.0f);
-    
-    glRotatef(hlxdegree, 1, 0, 0);
-    glRotatef(hlzdegree, 0, 0, 1);
-    glRotatef(90,0,1,0);
-    
-    
-    GLUquadricObj *quadratic_17;
-    quadratic_17=gluNewQuadric();
-    mySolidCylinder(quadratic_17,0.2f,0.2f,2.8f,32,32);
-    glPopMatrix();
-    
-    float rad=((float)hlzdegree)/180;
-    //    cout<<cos(rad*Pi)<<endl;
-    hxh=hxb+2.8*cos(rad*Pi);
-    hyh=hyb+2.8*sin(rad*Pi);
-    
-    rad=((float)hlxdegree)/180;
-    hyh=hyh-2.8*(1-cos(rad*Pi));
-    hzh=2.8*sin(rad*Pi);
-    //    cout<<hxh<<" "<<hyh<<endl;
-    
-    glPushMatrix();
-    glTranslatef(hxh,hyh,hzh);
-    glutSolidSphere(0.4, 120, 120);
-    glPopMatrix();
-    
-    //左手球
-    if(flag){
-        glPushMatrix();
-        glTranslatef(ballx, bally, ballz);
-        glTranslatef(hxh-0.6f,hyh, hzh);
-
-        glBindTexture(GL_TEXTURE_2D, texBall);
-        glutSolidSphere(0.5, 400, 400);
-        glPopMatrix();
-        balltempx=hxh-0.6f;
-        balltempy=hyh;
-        balltempz=hzh;
+    if (i == 0) {
+        glColor3ub(0,0,0);
     }
-    else{
-        
-        glPushMatrix();
-        glTranslatef(ballx, bally, ballz);
-        glTranslatef(balltempx,balltempy, balltempz);
-        glutSolidSphere(0.4, 400, 400);
-        glPopMatrix();
-    }
-    //右胳膊
-
-    
-    glPushMatrix();
-    glTranslatef(2.6f, 2.0f, 0.0);
-    glutSolidSphere(0.4, 120, 120);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(3.0f, -0.4f, 0.0f);
-    
-    glRotatef(100, 0, 0, 1);
-    glRotatef(90,0,1,0);
-    glRotatef(hright, 1, 0, 0);
-    
-    GLUquadricObj *quadratic_18;
-    quadratic_18=gluNewQuadric();
-    mySolidCylinder(quadratic_18,0.2f,0.2f,2.8f,32,32);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(3.1f, -0.7f, 0.0);
-    glutSolidSphere(0.4, 120, 120);
-    glPopMatrix();
-    
-    //左裤子
-    
-    glPushMatrix();
-    glTranslatef(-1.0f, -1.1f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    GLUquadricObj *quadratic_1;
-    quadratic_1=gluNewQuadric();
-    mySolidCylinder(quadratic_1,0.7f,0.7f,0.5f,32,32);
-    glPopMatrix();
-    
-    //右裤子
-    glPushMatrix();
-    glTranslatef(1.0f, -1.1f, 0.0f);
-    
-    glRotatef(90,1,0,0);
-    
-    GLUquadricObj *quadratic_2;
-    quadratic_2=gluNewQuadric();
-    mySolidCylinder(quadratic_2,0.7f,0.7f,0.5f,32,32);
-    glPopMatrix();
-    //左腿
-    glPushMatrix();
-    glTranslatef(-1.0f, -3.4f, 0.0f);
-    
-    glRotatef(-90,1,0,0);
-    
-    GLUquadricObj *quadratic_3;
-    quadratic_3=gluNewQuadric();
-    glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
-    gluQuadricTexture(quadratic_3, GL_TRUE);
-    mySolidCylinder(quadratic_3,0.2f,0.2f,1.85f,32,32);
-    glPopMatrix();
-    //右腿
-    glPushMatrix();
-    glTranslatef(1.0f, -3.4f, 0.0f);
-    glRotatef(-90,1,0,0);
-    
-    GLUquadricObj *quadratic_4;
-    quadratic_4=gluNewQuadric();
-    glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
-    gluQuadricTexture(quadratic_4, GL_TRUE);
-    mySolidCylinder(quadratic_4,0.2f,0.2f,1.85f,32,32);
-    glPopMatrix();
-    
-    //左脚
-    glPushMatrix();
-    glTranslatef(-1.0f, -3.5f, 0.0f);
-    
-    GLUquadricObj *quadratic_15;
-    quadratic_15=gluNewQuadric();
-    mySolidCylinder(quadratic_15,0.3f,0.5f,1.0f,32,32);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(-1.0f, -3.5f, 1.0f);
-    glutSolidSphere(0.5, 120, 120);
-    glPopMatrix();
-    
-    glPushMatrix();
-    glTranslatef(-1.0f, -3.5f, 0.0f);
-    glutSolidSphere(0.3, 120, 120);
-    glPopMatrix();
-    //右脚
     glPushMatrix();
     glTranslatef(1.0f, -3.5f, 0.0f);
     
@@ -1234,7 +873,7 @@ void drawobjects(GLenum mode){
     glTranslatef(tra1+5.0f,0,pz);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
-    drawPDX();
+    drawPDX(0);
     glPopMatrix();
     
 	
@@ -1242,13 +881,12 @@ void drawobjects(GLenum mode){
     glTranslatef(tra2-15.0f, 0.5f,hz-3.0f);
     glRotatef(rot2,0,1,0);
     glScalef(sca2,sca2,sca2);
-    drawHMBB();
+    drawHMBB(0);
     glPopMatrix();
     
     //关闭光照
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
-    
     //画阴影
     glPushMatrix();
     //乘以压平的阴影矩阵
@@ -1256,7 +894,7 @@ void drawobjects(GLenum mode){
     glTranslatef(tra2-15.0f, 0.5f,hz-3.0f);
     glRotatef(rot2,0,1,0);
     glScalef(sca2,sca2,sca2);
-    drawHMBB_shadow();
+    drawHMBB(1);
     //旋转
     glPopMatrix();
     glEnable(GL_LIGHTING);
@@ -1272,7 +910,7 @@ void drawobjects(GLenum mode){
     glTranslatef(tra1+5.0f,0,pz);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
-    drawPDX_shadow();
+    drawPDX(1);
     //旋转
     glPopMatrix();
     glEnable(GL_LIGHTING);
