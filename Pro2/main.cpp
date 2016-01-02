@@ -81,7 +81,7 @@ GLfloat balltempz=0;
 int hlzdegree=-100;
 int hlxdegree=0;
 bool flag=true;
-bool play=true;
+int play=0;
 
 int W, H;
 #define BMP_Header_Length 54
@@ -1184,76 +1184,77 @@ void go(){
     }
     float rad;
     
-    while(count<41){
-        ball_angle+=18;
-        rad=((float)ball_angle/180);
-        ballz=15-15*cos(rad*Pi);
-        bally=5*sin(rad*Pi);
-        flag=false;
-        
-        hlxdegree+=13;
-        display();
-//        sleep(1);
-        count++;
-    }
-    while(count<44){
-        trapy+=2;
-        display();
-//        sleep(1);
-        count++;
-    }
-    while(count<47){
-        rotpx-=8;
-        display();
-//        sleep(1);
-        count++;
-    }
-    while(count<50){
-        rotpz+=6;
-        ball_angle-=1;
-        cout<<ball_angle<<endl;
-        rad=((float)ball_angle/180);
-        ballz=15-10*cos(rad*Pi);
-        bally=5*sin(rad*Pi);
-        
-        flag=false;
-        display();
-//        sleep(1);
-//        sleep(1);
-        count++;
-    }
-    while(count<53){
-        ball_angle-=17.5;
-        rad=((float)ball_angle/180);
-        cout<<rad<<endl;
-        ballz=15-15*cos(rad*Pi);
-        bally=5*sin(rad*Pi);
-        cout<<bally<<"bal"<<endl;
-        flag=false;
-        hlxdegree-=13;
-        rotpz-=6;
-        display();
-//        sleep(1);
-        count++;
-    }
-    while(count<56){
-        ball_angle-=17.5;
-        rad=((float)ball_angle/180);
-        cout<<rad<<endl;
-        ballz=15-15*cos(rad*Pi);
-        bally=5*sin(rad*Pi);
-        cout<<bally<<"bal"<<endl;
-        flag=false;
-        hlxdegree-=13;
-        rotpx+=8;
-        trapy-=2;
-        display();
-//        sleep(1);
-        count++;
-    }
+//    while(count<41){
+//        ball_angle+=18;
+//        rad=((float)ball_angle/180);
+//        ballz=15-15*cos(rad*Pi);
+//        bally=5*sin(rad*Pi);
+//        flag=false;
+//        
+//        hlxdegree+=13;
+//        display();
+////        sleep(1);
+//        count++;
+//    }
+//    while(count<44){
+//        trapy+=2;
+//        display();
+////        sleep(1);
+//        count++;
+//    }
+//    while(count<47){
+//        rotpx-=8;
+//        display();
+////        sleep(1);
+//        count++;
+//    }
+//    while(count<50){
+//        rotpz+=6;
+//        ball_angle-=1;
+//        cout<<ball_angle<<endl;
+//        rad=((float)ball_angle/180);
+//        ballz=15-10*cos(rad*Pi);
+//        bally=5*sin(rad*Pi);
+//        
+//        flag=false;
+//        display();
+////        sleep(1);
+////        sleep(1);
+//        count++;
+//    }
+//    while(count<53){
+//        ball_angle-=17.5;
+//        rad=((float)ball_angle/180);
+//        cout<<rad<<endl;
+//        ballz=15-15*cos(rad*Pi);
+//        bally=5*sin(rad*Pi);
+//        cout<<bally<<"bal"<<endl;
+//        flag=false;
+//        hlxdegree-=13;
+//        rotpz-=6;
+//        display();
+////        sleep(1);
+//        count++;
+//    }
+//    while(count<56){
+//        ball_angle-=17.5;
+//        rad=((float)ball_angle/180);
+//        cout<<rad<<endl;
+//        ballz=15-15*cos(rad*Pi);
+//        bally=5*sin(rad*Pi);
+//        cout<<bally<<"bal"<<endl;
+//        flag=false;
+//        hlxdegree-=13;
+//        rotpx+=8;
+//        trapy-=2;
+//        display();
+////        sleep(1);
+//        count++;
+//    }
     int repeatcount=0;
-    while(play){
-        while(repeatcount<6){
+    while(play<10){
+        play++;
+        while(repeatcount<3){
             ball_angle+=18;
             rad=((float)ball_angle/180);
             ballz=15-15*cos(rad*Pi);
@@ -1265,19 +1266,26 @@ void go(){
 //            sleep(1);
             repeatcount++;
         }
-        while(repeatcount<9){
+        while(repeatcount<6){
+            ball_angle+=18;
+            rad=((float)ball_angle/180);
+            ballz=15-15*cos(rad*Pi);
+            bally=5*sin(rad*Pi);
+            flag=false;
+            
+            hlxdegree+=13;
             trapy+=2;
             display();
 //            sleep(1);
             repeatcount++;
         }
-        while(repeatcount<12){
+        while(repeatcount<9){
             rotpx-=8;
             display();
 //            sleep(1);
             repeatcount++;
         }
-        while(repeatcount<15){
+        while(repeatcount<12){
             rotpz+=6;
             ball_angle-=1;
             cout<<ball_angle<<endl;
@@ -1290,7 +1298,7 @@ void go(){
 //            sleep(1);
             repeatcount++;
         }
-        while(repeatcount<18){
+        while(repeatcount<15){
             ball_angle-=17.5;
             rad=((float)ball_angle/180);
             cout<<rad<<endl;
@@ -1304,7 +1312,7 @@ void go(){
 //            sleep(1);
             repeatcount++;
         }
-        while(repeatcount<21){
+        while(repeatcount<18){
             ball_angle-=17.5;
             rad=((float)ball_angle/180);
             cout<<rad<<endl;
@@ -1411,17 +1419,17 @@ int main(int argc, char * argv[]) {
     //texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
     //texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball.bmp");
 
-//    texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
-//    texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
-//    texHMBB_face_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_back.bmp");
-//    texHMBB_cloth_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_front.bmp");
-//    texHMBB_cloth_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_back.bmp");
-//    texHMBB_sock = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_sock.bmp");
-//    texFront = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Front.bmp");
-//    texLeft = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/left.bmp");
-//    texRight = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Right.bmp");
-//    texUp = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Up.bmp");
-//    texBall = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ball.bmp");
+    //texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
+    //texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
+    //texHMBB_face_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_back.bmp");
+    //texHMBB_cloth_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_front.bmp");
+    //texHMBB_cloth_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_back.bmp");
+    //texHMBB_sock = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_sock.bmp");
+    //texFront = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Front.bmp");
+    //texLeft = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/left.bmp");
+    //texRight = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Right.bmp");
+    //texUp = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Up.bmp");
+    //texBall = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ball.bmp");
 
     glutDisplayFunc(display);
     glutSpecialFunc(specialKeys);
