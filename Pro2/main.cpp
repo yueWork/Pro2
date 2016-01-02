@@ -5,8 +5,8 @@
 //  Created by byue on 15/11/8.
 //  Copyright © 2015年 byue. All rights reserved.
 //
-#include <Windows.h>
-#include <GL/glut.h>
+//#include <Windows.h>
+#include <GLUT/GLUT.h>
 //#include <GLUT/GLUT.h>
 #include <iostream>
 #include <math.h>
@@ -50,6 +50,9 @@ GLint menu_HMBB_id;
 GLfloat tra1=0;
 GLfloat rot1=0;
 GLfloat sca1=1;
+GLfloat rotpx=0;
+GLfloat rotpz=0;
+GLfloat trapy=0;
 
 GLfloat tra2=0;
 GLfloat rot2=0;
@@ -78,9 +81,10 @@ GLfloat balltempx=0;
 GLfloat balltempy=0;
 GLfloat balltempz=0;
 
-int hlzdegree=0;
+int hlzdegree=-100;
 int hlxdegree=0;
 bool flag=true;
+bool play=true;
 
 int W, H;
 #define BMP_Header_Length 54
@@ -520,22 +524,24 @@ void drawHMBB(int i){
     }
 	//胳膊
 	//glTranslatef(-2.7f, 1.8f, 0.0f);
-    glRotatef(-100, 0, 0, 1);
+    glRotated(hlxdegree, 1, 0, 0);
+    glRotatef(hlzdegree, 0, 0, 1);
 	glRotatef(90,0,1,0);
+    
 	glPushMatrix();    
     GLUquadricObj *quadratic_17;
     quadratic_17=gluNewQuadric();
     mySolidCylinder(quadratic_17,0.2f,0.2f,2.8f,32,32);
     glPopMatrix();
 
-    //float rad=((float)hlzdegree)/180;
+    float rad=((float)hlzdegree)/180;
 
-    //hxh=hxb+2.8*cos(rad*Pi);
-    //hyh=hyb+2.8*sin(rad*Pi);
-    //
-    //rad=((float)hlxdegree)/180;
-    //hyh=hyh-2.8*(1-cos(rad*Pi));
-    //hzh=2.8*sin(rad*Pi);
+    hxh=hxb+2.8*cos(rad*Pi);
+    hyh=hyb+2.8*sin(rad*Pi);
+    
+    rad=((float)hlxdegree)/180;
+    hyh=hyh-2.8*(1-cos(rad*Pi));
+    hzh=2.8*sin(rad*Pi);
 
     if (i == 0) {
         glColor3ub(253, 247, 62);//黄色
@@ -551,32 +557,32 @@ void drawHMBB(int i){
 
 	glPopMatrix();
     
-    //左手球
-    //if(flag){
-    //    glPushMatrix();
-    //    glTranslatef(ballx, bally, ballz);
-    //    glTranslatef(hxh-0.6f,hyh, hzh);
-    //    if (i == 0) {
-    //        glColor4f(1.0f,1.0f,1.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-    //        glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
-    //        glEnable(GL_TEXTURE_2D);
-    //    }
-    //    glBindTexture(GL_TEXTURE_2D, texBall);
-    //    glutSolidSphere(0.5, 400, 400);
-    //    glDisable(GL_TEXTURE_2D);
-    //    glPopMatrix();
-    //    balltempx=hxh-0.6f;
-    //    balltempy=hyh;
-    //    balltempz=hzh;
-    //}
-    //else{
-    //    
-    //    glPushMatrix();
-    //    glTranslatef(ballx, bally, ballz);
-    //    glTranslatef(balltempx,balltempy, balltempz);
-    //    glutSolidSphere(0.4, 400, 400);
-    //    glPopMatrix();
-    //}
+//    左手球
+    if(flag){
+        glPushMatrix();
+        glTranslatef(ballx, bally, ballz);
+        glTranslatef(hxh-0.6f,hyh, hzh);
+        if (i == 0) {
+            glColor4f(1.0f,1.0f,1.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
+            glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+            glEnable(GL_TEXTURE_2D);
+        }
+        glBindTexture(GL_TEXTURE_2D, texBall);
+        glutSolidSphere(0.7, 400, 400);
+        glDisable(GL_TEXTURE_2D);
+        glPopMatrix();
+        balltempx=hxh-0.6f;
+        balltempy=hyh;
+        balltempz=hzh;
+    }
+    else{
+        
+        glPushMatrix();
+        glTranslatef(ballx, bally, ballz);
+        glTranslatef(balltempx,balltempy, balltempz);
+        glutSolidSphere(0.7, 400, 400);
+        glPopMatrix();
+    }
 
     //右胳膊
     if (i == 0) {
@@ -907,6 +913,9 @@ void normal(unsigned char key,int x,int y){
     if(key==111){//o
         rot1-=12.0;
     }
+    if(key==122){
+        play=false;
+    }
     display();
 }
 
@@ -919,7 +928,9 @@ void drawobjects(GLenum mode){
 
 
     glPushMatrix();
-    glTranslatef(tra1+5.0f,0,pz);
+    glTranslatef(tra1+6.7f,trapy,pz-1.7f);
+    glRotated(rotpx, 1, 0, 0);
+    glRotated(rotpz, 0, 0, 1);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
     drawPDX(0);
@@ -927,7 +938,7 @@ void drawobjects(GLenum mode){
     
 	
     glPushMatrix();
-    glTranslatef(tra2-15.0f, 0.5f,hz-3.0f);
+    glTranslatef(tra2-15.0f, 0.5f,hz);
     glRotatef(rot2,0,1,0);
     glScalef(sca2,sca2,sca2);
     drawHMBB(0);
@@ -956,7 +967,8 @@ void drawobjects(GLenum mode){
     glPushMatrix();
     //乘以压平的阴影矩阵
     glMultMatrixf((GLfloat*)shadowMat);
-    glTranslatef(tra1+5.0f,0,pz);
+    glTranslatef(tra1+7.0f,trapy,pz-3.0f);
+    glRotated(rotpx, 1, 0, 0);
     glRotatef(rot1,0,1,0);
     glScalef(sca1,sca1,sca1);
     drawPDX(1);
@@ -1188,50 +1200,175 @@ void back(){
     }
     
 }
-
 void go(){
-    
     rot1=0;
     rot2=0;
-    
     int count=0;
-    int ball_angle=0;
+    float ball_angle=0;
     while(count<10){
         rot1-=10;
         rot2+=10;
         display();
+        sleep(1);
         count++;
     }
     while(count<20){
         hlzdegree-=15;
         display();
+        sleep(1);
         count++;
     }
     while(count<30){
         hlxdegree+=10;
         display();
+        sleep(1);
         count++;
     }
     while(count<35){
         hlxdegree-=10;
         display();
+        sleep(1);
         count++;
     }
     float rad;
-    while(count<45){
+    
+    while(count<41){
         ball_angle+=18;
         rad=((float)ball_angle/180);
-        ballz=10-10*cos(rad*Pi);
+        ballz=15-15*cos(rad*Pi);
         bally=5*sin(rad*Pi);
         flag=false;
         
         hlxdegree+=13;
-//        bally+=0.5f;
         display();
-//        sleep(1);
+        sleep(1);
         count++;
     }
-    
+    while(count<44){
+        trapy+=2;
+        display();
+        sleep(1);
+        count++;
+    }
+    while(count<47){
+        rotpx-=8;
+        display();
+        sleep(1);
+        count++;
+    }
+    while(count<50){
+        rotpz+=6;
+        ball_angle-=1;
+        cout<<ball_angle<<endl;
+        rad=((float)ball_angle/180);
+        ballz=15-10*cos(rad*Pi);
+        bally=5*sin(rad*Pi);
+        
+        flag=false;
+        display();
+        sleep(1);
+        sleep(1);
+        count++;
+    }
+    while(count<53){
+        ball_angle-=17.5;
+        rad=((float)ball_angle/180);
+        cout<<rad<<endl;
+        ballz=15-15*cos(rad*Pi);
+        bally=5*sin(rad*Pi);
+        cout<<bally<<"bal"<<endl;
+        flag=false;
+        hlxdegree-=13;
+        rotpz-=6;
+        display();
+        sleep(1);
+        count++;
+    }
+    while(count<56){
+        ball_angle-=17.5;
+        rad=((float)ball_angle/180);
+        cout<<rad<<endl;
+        ballz=15-15*cos(rad*Pi);
+        bally=5*sin(rad*Pi);
+        cout<<bally<<"bal"<<endl;
+        flag=false;
+        hlxdegree-=13;
+        rotpx+=8;
+        trapy-=2;
+        display();
+        sleep(1);
+        count++;
+    }
+    int repeatcount=0;
+    while(play){
+        while(repeatcount<6){
+            ball_angle+=18;
+            rad=((float)ball_angle/180);
+            ballz=15-15*cos(rad*Pi);
+            bally=5*sin(rad*Pi);
+            flag=false;
+            
+            hlxdegree+=13;
+            display();
+            sleep(1);
+            repeatcount++;
+        }
+        while(repeatcount<9){
+            trapy+=2;
+            display();
+            sleep(1);
+            repeatcount++;
+        }
+        while(repeatcount<12){
+            rotpx-=8;
+            display();
+            sleep(1);
+            repeatcount++;
+        }
+        while(repeatcount<15){
+            rotpz+=6;
+            ball_angle-=1;
+            cout<<ball_angle<<endl;
+            rad=((float)ball_angle/180);
+            ballz=15-10*cos(rad*Pi);
+            bally=5*sin(rad*Pi);
+            
+            flag=false;
+            display();
+            sleep(1);
+            repeatcount++;
+        }
+        while(repeatcount<18){
+            ball_angle-=17.5;
+            rad=((float)ball_angle/180);
+            cout<<rad<<endl;
+            ballz=15-15*cos(rad*Pi);
+            bally=5*sin(rad*Pi);
+            cout<<bally<<"bal"<<endl;
+            flag=false;
+            hlxdegree-=13;
+            rotpz-=6;
+            display();
+            sleep(1);
+            repeatcount++;
+        }
+        while(repeatcount<21){
+            ball_angle-=17.5;
+            rad=((float)ball_angle/180);
+            cout<<rad<<endl;
+            ballz=15-15*cos(rad*Pi);
+            bally=5*sin(rad*Pi);
+            cout<<bally<<"bal"<<endl;
+            flag=false;
+            hlxdegree-=13;
+            rotpx+=8;
+            trapy-=2;
+            display();
+            sleep(1);
+            repeatcount++;
+        }
+        repeatcount=0;
+    }
 }
 void recover(){
     //    s_eye[]={0,0,5.0};
@@ -1251,11 +1388,15 @@ void recover(){
     rot2=0;
     hlzdegree=-100;
     hlxdegree=0;
+    
     ballx=0;
     bally=0;
     ballz=0;
     flag=true;
-    
+    play=true;
+    GLfloat rotpx=0;
+    GLfloat rotpz=0;
+    GLfloat trapy=0;
 }
 
 void light(){
