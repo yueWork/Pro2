@@ -878,23 +878,28 @@ void normal(unsigned char key,int x,int y){
     if(key==101){//e
         rot2-=12.0;
     }
-    if(key==106){//j
+    if(key==106){//j 向左
+        rad=(float)rot1/180*Pi;
+        tra1-=0.2f*cos(rad);
+        pz+=0.2f*sin(rad);
+        
+    }
+    if(key==108){//l 向右
+        rad=(float)rot1/180*Pi;
+        tra1+=0.2f*cos(rad);
+        pz-=0.2f*sin(rad);
+        
+//        tra1+=0.2f;
+    }
+    if(key==105){//i 向后
         rad=(float)rot1/180*Pi;
         tra1-=0.2f*sin(rad);
         pz-=0.2f*cos(rad);
-        
     }
-    if(key==108){//l
+    if(key==107){//k 向前
         rad=(float)rot1/180*Pi;
         tra1+=0.2f*sin(rad);
         pz+=0.2f*cos(rad);
-//        tra1+=0.2f;
-    }
-    if(key==105){//i
-        pz-=0.2f;
-    }
-    if(key==107){//k
-        pz+=0.2f;
     }
     if(key==117){//u
         rot1+=12.0;
@@ -962,8 +967,6 @@ void drawobjects(GLenum mode){
     glEnable(GL_COLOR_MATERIAL);
     
 }
-
-
 void init()
 {
     glClearColor(1.0,1.0,1.0,1.0);
