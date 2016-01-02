@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Pro2/main.cpp"
-            timestampString = "472312825.160507"
+            timestampString = "473224974.679578"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1082"
-            endingLineNumber = "1082"
-            landmarkName = "recover()"
+            startingLineNumber = "1108"
+            endingLineNumber = "1108"
+            landmarkName = "retreat()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pro2/main.cpp"
+            timestampString = "473224974.679578"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1141"
+            endingLineNumber = "1141"
+            landmarkName = "narrow()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
