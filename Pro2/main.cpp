@@ -130,8 +130,6 @@ void reshape(int w,int h)
     gluLookAt(s_eye[0], s_eye[1], s_eye[2],
               s_at[0], s_at[1], s_at[2],
               0.0,1.0, 0.0);
-
-//    gluLookAt(0, 0, 40, 0, 0, 0, 0, 1, 0);//30,40
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -575,14 +573,16 @@ void drawHMBB(int i){
     if(flag){
         glPushMatrix();
         glTranslatef(ballx, bally, ballz);
-        glTranslatef(hxh-0.6f,hyh, hzh);
+        glTranslatef(hxh-2.0f,hyh, hzh);
         if (i == 0) {
             glEnable(GL_TEXTURE_2D);
-            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
         }
         glBindTexture(GL_TEXTURE_2D, texBall);
-        
-        glutSolidSphere(0.5, 400, 400);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        GLUquadricObj *quadratic_5;
+        quadratic_5=gluNewQuadric();
+        gluQuadricTexture(quadratic_5, GL_TRUE);
+        gluSphere(quadratic_5, 1, 400, 400);
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();
         balltempx=hxh-0.6f;
@@ -590,11 +590,19 @@ void drawHMBB(int i){
         balltempz=hzh;
     }
     else{
-        
         glPushMatrix();
         glTranslatef(ballx, bally, ballz);
         glTranslatef(balltempx,balltempy, balltempz);
-        glutSolidSphere(0.4, 400, 400);
+        if (i == 0) {
+            glEnable(GL_TEXTURE_2D);
+        }
+        glBindTexture(GL_TEXTURE_2D, texBall);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        GLUquadricObj *quadratic_5;
+        quadratic_5=gluNewQuadric();
+        gluQuadricTexture(quadratic_5, GL_TRUE);
+        gluSphere(quadratic_5, 1, 400, 400);
+        glDisable(GL_TEXTURE_2D);
         glPopMatrix();
     }
     //右胳膊
@@ -1394,7 +1402,7 @@ int main(int argc, char * argv[]) {
     texLeft = load_texture("E:\\workspace\\Pro2\\Pro2\\left.bmp");
     texRight = load_texture("E:\\workspace\\Pro2\\Pro2\\Right.bmp");
     texUp = load_texture("E:\\workspace\\Pro2\\Pro2\\Up.bmp");
-    texBall = load_texture("E:\\workspace\\Pro2\\Pro2\\ball1.bmp");*/
+    texBall = load_texture("E:\\workspace\\Pro2\\Pro2\\ball.bmp");*/
 
     texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
     texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
@@ -1406,7 +1414,7 @@ int main(int argc, char * argv[]) {
     texLeft = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/left.bmp");
     texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
     texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
-    texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball1.bmp");
+    texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball.bmp");
 
 //    texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
 //    texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
@@ -1418,7 +1426,7 @@ int main(int argc, char * argv[]) {
 //    texLeft = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/left.bmp");
 //    texRight = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Right.bmp");
 //    texUp = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Up.bmp");
-//    texBall = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ball1.bmp");
+//    texBall = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ball.bmp");
 
     glutDisplayFunc(display);
     glutSpecialFunc(specialKeys);
