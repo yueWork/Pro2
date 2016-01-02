@@ -5,9 +5,9 @@
 //  Created by byue on 15/11/8.
 //  Copyright © 2015年 byue. All rights reserved.
 //
-#include <Windows.h>
-#include <GL/glut.h>
-//#include <GLUT/GLUT.h>
+//#include <Windows.h>
+//#include <GL/glut.h>
+#include <GLUT/GLUT.h>
 #include <iostream>
 #include <math.h>
 
@@ -572,7 +572,6 @@ void drawHMBB(int i){
 	glPopMatrix();
     
     //左手球
-<<<<<<< HEAD
     if(flag){
         glPushMatrix();
         glTranslatef(ballx, bally, ballz);
@@ -1397,29 +1396,29 @@ int main(int argc, char * argv[]) {
     texUp = load_texture("E:\\workspace\\Pro2\\Pro2\\Up.bmp");
     texBall = load_texture("E:\\workspace\\Pro2\\Pro2\\ball1.bmp");*/
 
-    //texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
-    //texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
-    //texHMBB_face_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_back.bmp");
-    //texHMBB_cloth_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_front.bmp");
-    //texHMBB_cloth_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_back.bmp");
-    //texHMBB_sock = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_sock.bmp");
-    //texFront = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Front.bmp");
-    //texLeft = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/left.bmp");
-    //texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
-    //texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
-    //texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball1.bmp");
+    texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
+    texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
+    texHMBB_face_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_back.bmp");
+    texHMBB_cloth_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_front.bmp");
+    texHMBB_cloth_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_back.bmp");
+    texHMBB_sock = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_sock.bmp");
+    texFront = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Front.bmp");
+    texLeft = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/left.bmp");
+    texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
+    texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
+    texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball1.bmp");
 
-    texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
-    texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
-    texHMBB_face_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_back.bmp");
-    texHMBB_cloth_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_front.bmp");
-    texHMBB_cloth_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_back.bmp");
-    texHMBB_sock = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_sock.bmp");
-    texFront = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Front.bmp");
-    texLeft = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/left.bmp");
-    texRight = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Right.bmp");
-    texUp = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Up.bmp");
-    texBall = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ball1.bmp");
+//    texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
+//    texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
+//    texHMBB_face_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_back.bmp");
+//    texHMBB_cloth_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_front.bmp");
+//    texHMBB_cloth_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_back.bmp");
+//    texHMBB_sock = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_sock.bmp");
+//    texFront = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Front.bmp");
+//    texLeft = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/left.bmp");
+//    texRight = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Right.bmp");
+//    texUp = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Up.bmp");
+//    texBall = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ball1.bmp");
 
     glutDisplayFunc(display);
     glutSpecialFunc(specialKeys);
