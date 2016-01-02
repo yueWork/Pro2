@@ -8,7 +8,6 @@
 //#include <Windows.h>
 
 #include <GLUT/GLUT.h>
->>>>>>> origin/master
 #include <iostream>
 #include <math.h>
 
@@ -1236,25 +1235,25 @@ void go(){
         rot1-=10;
         rot2+=10;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<20){
         hlzdegree-=15;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<30){
         hlxdegree+=10;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<35){
         hlxdegree-=10;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     float rad;
@@ -1268,19 +1267,19 @@ void go(){
         
         hlxdegree+=13;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<44){
         trapy+=2;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<47){
         rotpx-=8;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<50){
@@ -1293,8 +1292,8 @@ void go(){
         
         flag=false;
         display();
-        sleep(1);
-        sleep(1);
+//        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<53){
@@ -1308,7 +1307,7 @@ void go(){
         hlxdegree-=13;
         rotpz-=6;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     while(count<56){
@@ -1323,7 +1322,7 @@ void go(){
         rotpx+=8;
         trapy-=2;
         display();
-        sleep(1);
+//        sleep(1);
         count++;
     }
     int repeatcount=0;
@@ -1337,19 +1336,19 @@ void go(){
             
             hlxdegree+=13;
             display();
-            sleep(1);
+//            sleep(1);
             repeatcount++;
         }
         while(repeatcount<9){
             trapy+=2;
             display();
-            sleep(1);
+//            sleep(1);
             repeatcount++;
         }
         while(repeatcount<12){
             rotpx-=8;
             display();
-            sleep(1);
+//            sleep(1);
             repeatcount++;
         }
         while(repeatcount<15){
@@ -1362,7 +1361,7 @@ void go(){
             
             flag=false;
             display();
-            sleep(1);
+//            sleep(1);
             repeatcount++;
         }
         while(repeatcount<18){
@@ -1376,7 +1375,7 @@ void go(){
             hlxdegree-=13;
             rotpz-=6;
             display();
-            sleep(1);
+//            sleep(1);
             repeatcount++;
         }
         while(repeatcount<21){
@@ -1391,7 +1390,7 @@ void go(){
             rotpx+=8;
             trapy-=2;
             display();
-            sleep(1);
+//            sleep(1);
             repeatcount++;
         }
         repeatcount=0;

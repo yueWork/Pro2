@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1123"
             endingLineNumber = "1123"
-            landmarkName = "forward()"
+            landmarkName = "load_texture(const char* file_name)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1156"
             endingLineNumber = "1156"
-            landmarkName = "turn()"
+            landmarkName = "forward()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
