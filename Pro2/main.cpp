@@ -831,29 +831,20 @@ void specialKeys(int key,int x,int y){
     if(key==GLUT_KEY_LEFT)
     {
         s_eye[0] += 0.5;
-        //        rot1-= 12.0;//每按一次左键，旋转2度。
-//        rot2-=12.0;
-//        cout<<"test turn left";
     }
     if (key==GLUT_KEY_RIGHT)
     {
         s_eye[0]-=0.5;
-//        rot1+= 12.0;//每按一次左键，旋转2度。
-//        rot2+=12.0;                       //每按一次右键，旋转2度。
-//        cout<<"test turn right";
     }
     float rad =float(PI*s_angle/180.0f);                    //计算SIN和COS函数中需要的参数。
     // 前进,后退请求
     if(key==GLUT_KEY_UP)
     {
         s_eye[1]+=1;
-//        cout<<"test turn up";
     }
     if(key==GLUT_KEY_DOWN)
     {
         s_eye[1]-=1;
-        
-//        cout<<"test turn down";
     }
     glLoadIdentity();
     gluLookAt(s_eye[0], s_eye[1], s_eye[2],
@@ -862,19 +853,54 @@ void specialKeys(int key,int x,int y){
     display();
 }
 void normal(unsigned char key,int x,int y){
-    if(key==117){
-        s_at[1]+=0.5;
-//        cout<<"at";
-    }
-    if(key==100){
-        s_at[1]-=0.5;
-    }
-    if(key==102){
+    float rad;
+    if(key==102){//f
         s_eye[2]-=1;
     }
-
-    if(key==98){
+    if(key==98){//b
         s_eye[2]+=1;
+    }
+    if(key==97){//a
+        tra2-=0.2f;
+    }
+    if(key==100){//d
+        tra2+=0.2f;
+    }
+    if(key==119){//w
+        hz-=0.2f;
+    }
+    if(key==115){//s
+        hz+=0.2f;
+    }
+    if(key==113){//q
+        rot2+=12.0;
+    }
+    if(key==101){//e
+        rot2-=12.0;
+    }
+    if(key==106){//j
+        rad=(float)rot1/180*Pi;
+        tra1-=0.2f*sin(rad);
+        pz-=0.2f*cos(rad);
+        
+    }
+    if(key==108){//l
+        rad=(float)rot1/180*Pi;
+        tra1+=0.2f*sin(rad);
+        pz+=0.2f*cos(rad);
+//        tra1+=0.2f;
+    }
+    if(key==105){//i
+        pz-=0.2f;
+    }
+    if(key==107){//k
+        pz+=0.2f;
+    }
+    if(key==117){//u
+        rot1+=12.0;
+    }
+    if(key==111){//o
+        rot1-=12.0;
     }
     display();
 }
@@ -1171,33 +1197,27 @@ void go(){
         rot1-=10;
         rot2+=10;
         display();
-//        sleep(1);
         count++;
     }
     while(count<20){
         hlzdegree-=15;
-        
         display();
-//        sleep(1);
         count++;
     }
     while(count<30){
         hlxdegree+=10;
         display();
-//        sleep(1);
         count++;
     }
     while(count<35){
         hlxdegree-=10;
         display();
         count++;
-        
     }
     float rad;
     while(count<45){
         ball_angle+=18;
         rad=((float)ball_angle/180);
-//        cout<<rad<<endl;
         ballz=10-10*cos(rad*Pi);
         bally=5*sin(rad*Pi);
         flag=false;
@@ -1345,7 +1365,8 @@ int main(int argc, char * argv[]) {
     glutInitWindowPosition(200, 0);
     glutCreateWindow("海绵宝宝");
 
-	texGround = load_texture("E:\\workspace\\Pro2\\Pro2\\ground1.bmp");
+
+	/*texGround = load_texture("E:\\workspace\\Pro2\\Pro2\\ground1.bmp");
     texHMBB_face_front = load_texture("E:\\workspace\\Pro2\\Pro2\\HMBB_face_front.bmp");
     texHMBB_face_back = load_texture("E:\\workspace\\Pro2\\Pro2\\HMBB_face_back.bmp");
     texHMBB_cloth_front = load_texture("E:\\workspace\\Pro2\\Pro2\\HMBB_cloth_front.bmp");
@@ -1355,7 +1376,7 @@ int main(int argc, char * argv[]) {
     texLeft = load_texture("E:\\workspace\\Pro2\\Pro2\\left.bmp");
     texRight = load_texture("E:\\workspace\\Pro2\\Pro2\\Right.bmp");
     texUp = load_texture("E:\\workspace\\Pro2\\Pro2\\Up.bmp");
-    texBall = load_texture("E:\\workspace\\Pro2\\Pro2\\ball1.bmp");
+    texBall = load_texture("E:\\workspace\\Pro2\\Pro2\\ball1.bmp");*/
 
     //texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
     //texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
@@ -1368,6 +1389,19 @@ int main(int argc, char * argv[]) {
     //texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
     //texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
     //texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball1.bmp");
+
+    texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
+    texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
+    texHMBB_face_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_back.bmp");
+    texHMBB_cloth_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_front.bmp");
+    texHMBB_cloth_back = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_cloth_back.bmp");
+    texHMBB_sock = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_sock.bmp");
+    texFront = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Front.bmp");
+    texLeft = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/left.bmp");
+    texRight = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Right.bmp");
+    texUp = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/Up.bmp");
+    texBall = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ball1.bmp");
+
     glutDisplayFunc(display);
     glutSpecialFunc(specialKeys);
     glutKeyboardFunc(normal);
