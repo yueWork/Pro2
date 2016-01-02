@@ -191,6 +191,10 @@ void SetupRC()
 }
 void drawPDX(int i)
 {
+    glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
+    glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
+    glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
+
     //眉毛
     glColor3ub(0,0,0);
     glPushMatrix();
@@ -253,7 +257,9 @@ void drawPDX(int i)
         glColor3ub(0, 0, 0);
     GLdouble eqn0 [4]={0.0,-1.0,0.0,5};
     glClipPlane(GL_CLIP_PLANE0,eqn0);
-    glEnable(GL_CLIP_PLANE0);
+    if (i == 0) {
+        glEnable(GL_CLIP_PLANE0);
+    }
     glPushMatrix();
     glRotatef(-90, 1, 0, 0);
     glutSolidCone(2.5, 6, 200, 200);
@@ -301,7 +307,9 @@ void drawPDX(int i)
         glColor3ub(0, 0, 0);
     GLdouble eqn [4]={0.0,-1.0,0.0,0.0};
     glClipPlane(GL_CLIP_PLANE0,eqn);
-    glEnable(GL_CLIP_PLANE0);
+    if (i == 0) {
+        glEnable(GL_CLIP_PLANE0);
+    }
     glutSolidSphere(2.5,200,200);
     //截完了之后，再撤消,防止对其他部分产生影响。
     glDisable(GL_CLIP_PLANE0);
@@ -334,7 +342,9 @@ void drawPDX(int i)
     glRotatef(-10, 0, 1, 0);
     GLdouble eqn2 [4]={0.0,0.0,-1.0,0.8};
     glClipPlane(GL_CLIP_PLANE0,eqn2);
-    glEnable(GL_CLIP_PLANE0);
+    if (i == 0) {
+        glEnable(GL_CLIP_PLANE0);
+    }
     glutSolidCone(0.45,1.0,200, 200);
     glDisable(GL_CLIP_PLANE0);
     glPopMatrix();
@@ -348,7 +358,9 @@ void drawPDX(int i)
     glRotatef(90, 1, 0, 0);
     glRotatef(10, 0, 1, 0);
     glClipPlane(GL_CLIP_PLANE0,eqn2);
-    glEnable(GL_CLIP_PLANE0);
+    if (i == 0) {
+        glEnable(GL_CLIP_PLANE0);
+    }
     glutSolidCone(0.45,1.0,200, 200);
     glDisable(GL_CLIP_PLANE0);
     glPopMatrix();
@@ -357,11 +369,11 @@ void drawHMBB(int i){
     
     //身子前面
     if (i == 0) {
-        glColor4f(1.0f,1.0f,1.0f,1.0f);  //创建图形，alpha值为0.5f，表示半透明
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
+        glColor3ub(255, 255, 255);
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_front);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 0.0, 1.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,1.0f);
@@ -390,6 +402,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(-1.0, 0.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,0.0f,1.0f);
@@ -404,6 +417,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(1.0, 0.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,0.0f,1.0f);
@@ -418,6 +432,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-3.0f,5.0f,1.0f);
@@ -432,6 +447,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_back);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, -1.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
@@ -446,6 +462,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_front);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 0.0, 1.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,1.0f);
@@ -460,6 +477,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 0.0, -1.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
@@ -474,6 +492,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glNormal3f(-1.0, 0.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-1.2f,-1.0f);
@@ -489,6 +508,7 @@ void drawHMBB(int i){
     }
     glNormal3f(1.0, 0.0, 0.0);
     glBindTexture(GL_TEXTURE_2D, texHMBB_cloth_back);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(2.5f,-1.2f,-1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex3f(2.5f,0.0f,-1.0f);
@@ -546,11 +566,11 @@ void drawHMBB(int i){
         glTranslatef(ballx, bally, ballz);
         glTranslatef(hxh-0.6f,hyh, hzh);
         if (i == 0) {
-            glColor4f(1.0f,1.0f,1.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-            glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
             glEnable(GL_TEXTURE_2D);
+            glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
         }
         glBindTexture(GL_TEXTURE_2D, texBall);
+        
         glutSolidSphere(0.5, 400, 400);
         glDisable(GL_TEXTURE_2D);
         glPopMatrix();
@@ -638,6 +658,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     gluQuadricTexture(quadratic_3, GL_TRUE);
     mySolidCylinder(quadratic_3,0.2f,0.2f,1.85f,32,32);
     glDisable(GL_TEXTURE_2D);
@@ -656,6 +677,7 @@ void drawHMBB(int i){
         glEnable(GL_TEXTURE_2D);
     }
     glBindTexture(GL_TEXTURE_2D, texHMBB_sock);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     gluQuadricTexture(quadratic_4, GL_TRUE);
     mySolidCylinder(quadratic_4,0.2f,0.2f,1.85f,32,32);
     glDisable(GL_TEXTURE_2D);
@@ -706,6 +728,7 @@ void drawHMBB(int i){
     glPopMatrix();
 }
 void display(){
+    
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
     glEnable(GL_LIGHT1);
@@ -720,11 +743,10 @@ void display(){
               0.0,1.0, 0.0);
     
     //绘制沙滩背景
-    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texGround);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-75.0f, -3.8f, 20.0f);
@@ -734,11 +756,10 @@ void display(){
     glEnd();
     glDisable(GL_TEXTURE_2D);
     //场景上面
-    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
     
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texUp);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0f, 0.0f); glVertex3f(-75.0f, 60.0f, 20.0f);
@@ -748,11 +769,10 @@ void display(){
     glEnd();
     glDisable(GL_TEXTURE_2D);
     //场景前面
-    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
     
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texFront);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0f, 0.1f); glVertex3f(-75.0f, -3.8f, -50.0f);
@@ -762,11 +782,10 @@ void display(){
     glEnd();
     glDisable(GL_TEXTURE_2D);
     //场景右面
-    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
     
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texRight);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0f, 0.1f); glVertex3f(75.0f, -3.8f, -50.0f);
@@ -777,11 +796,10 @@ void display(){
     glDisable(GL_TEXTURE_2D);
     
     //场景左面
-    glColor4f(4.0f,4.0f,4.0f,0.5f);  //创建图形，alpha值为0.5f，表示半透明
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE);//进行混合
     
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texLeft);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
     glBegin(GL_QUADS);
     glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0.0f, 0.1f); glVertex3f(-75.0f, -3.8f, 20.0f);
@@ -865,10 +883,6 @@ void normal(unsigned char key,int x,int y){
 
 void drawobjects(GLenum mode){
     
-    glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
-    glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
-    glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
-
     glPushMatrix();
     glTranslatef(tra1+5.0f,0,pz);
     glRotatef(rot1,0,1,0);
@@ -918,7 +932,6 @@ void drawobjects(GLenum mode){
     glEnable(GL_COLOR_MATERIAL);
     
 }
-
 
 void init()
 {
@@ -1045,7 +1058,6 @@ GLuint load_texture(const char* file_name)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODELVIEW);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
                  GL_BGR_EXT, GL_UNSIGNED_BYTE, pixels);
     glBindTexture(GL_TEXTURE_2D, last_texture_ID);
@@ -1153,20 +1165,17 @@ void go(){
         rot1-=10;
         rot2+=10;
         display();
-//        sleep(1);
         count++;
     }
     while(count<20){
         hlzdegree-=15;
         
         display();
-//        sleep(1);
         count++;
     }
     while(count<30){
         hlxdegree+=10;
         display();
-//        sleep(1);
         count++;
     }
     while(count<35){
@@ -1179,15 +1188,12 @@ void go(){
     while(count<45){
         ball_angle+=18;
         rad=((float)ball_angle/180);
-//        cout<<rad<<endl;
         ballz=10-10*cos(rad*Pi);
         bally=5*sin(rad*Pi);
         flag=false;
         
         hlxdegree+=13;
-//        bally+=0.5f;
         display();
-//        sleep(1);
         count++;
     }
     
