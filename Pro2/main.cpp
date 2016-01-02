@@ -5,9 +5,11 @@
 //  Created by byue on 15/11/8.
 //  Copyright © 2015年 byue. All rights reserved.
 //
-//#include <Windows.h>
+#include <Windows.h>
 
-#include <GLUT/GLUT.h>
+//#include <GLUT/GLUT.h>
+#include <GL/glut.h>
+
 #include <iostream>
 #include <math.h>
 
@@ -30,17 +32,12 @@ const   float   DEG2RAD   =   3.14159/180;
 GLfloat lightPosition1[] = {30.0,20.0,-30.0,0.0};
 GLfloat lightPosition2[] = {30.0,20.0,30.0,0.0};
 const GLfloat whiteLight[] = {0.8,0.8,0.8,1.0};
-const GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };  //环境光
+GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f };  //环境光
 
 GLfloat matSpecular [] = {0.3,0.3,0.3,1.0};
 GLfloat matDiffuse[] = {0.3,0.3,0.3,1.0};
 GLfloat matShininess [] = {20.0};
 GLfloat matEmission [] = {0.3,0.3,0.3,1.0};
-//金
-GLfloat mat_ambient[] = { 0.25, 0.23, 0.06, 1.0};
-GLfloat mat_diffuse[] = { 0.35, 0.31, 0.09, 1.0};
-GLfloat mat_specular[] = { 0.80, 0.72, 0.21, 1.0};
-GLfloat mat_shininess[] = {83.2};
 
 
 static int spin = 0;
@@ -373,11 +370,13 @@ void drawPDX(int i)
 }
 void drawHMBB(int i){
     
+	
     //身子前面
     if (i == 0) {
         glColor3ub(255, 255, 255);
         glEnable(GL_TEXTURE_2D);
-    }
+    }else
+		glColor3ub(0,0,0);
     glBindTexture(GL_TEXTURE_2D, texHMBB_face_front);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBegin(GL_QUADS);
@@ -531,7 +530,6 @@ void drawHMBB(int i){
     }else
         glColor3ub(0, 0, 0);
 	//肩膀
-	//glTranslatef(hxb,hyb,hzb);
 	glTranslatef(-2.6f, 2.0f, 0.0);
     glPushMatrix();
     glutSolidSphere(0.4, 120, 120);
@@ -541,7 +539,6 @@ void drawHMBB(int i){
         glColor3ub(253, 247, 62);//黄色
     }
 	//胳膊
-	//glTranslatef(-2.7f, 1.8f, 0.0f);
     glRotated(hlxdegree, 1, 0, 0);
     glRotatef(hlzdegree, 0, 0, 1);
 	glRotatef(90,0,1,0);
@@ -568,7 +565,6 @@ void drawHMBB(int i){
 	//手
 	glTranslatef(0.0,0.0,2.8f);
     glPushMatrix();
-	//glTranslatef(hxh,hyh,hzh);
     glutSolidSphere(0.4, 120, 120);
     glPopMatrix();
 
@@ -756,14 +752,30 @@ void drawHMBB(int i){
     glPopMatrix();
 }
 void display(){
-    
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glPushMatrix();
-    glEnable(GL_LIGHT1);
-	glLightfv(GL_LIGHT1,GL_POSITION,lightPosition1);
-    glLightfv(GL_LIGHT1,GL_DIFFUSE,whiteLight);
-    glLightfv(GL_LIGHT1,GL_SPECULAR,whiteLight);
-	glPopMatrix();
+	
+	if(spin>=140&&spin<335)
+	{
+		LightAmbient[0]=0.1;
+		LightAmbient[1]=0.1;
+		LightAmbient[2]=0.1;
+
+		glDisable(GL_LIGHT1);
+	}
+	else
+	{
+		LightAmbient[0]=0.5;
+		LightAmbient[1]=0.5;
+		LightAmbient[2]=0.5;
+
+		glPushMatrix();
+		glEnable(GL_LIGHT1);
+		glLightfv(GL_LIGHT1,GL_POSITION,lightPosition1);
+		glLightfv(GL_LIGHT1,GL_DIFFUSE,whiteLight);
+		glLightfv(GL_LIGHT1,GL_SPECULAR,whiteLight);
+		glPopMatrix();
+	}
+
 
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT,LightAmbient);
 
@@ -920,8 +932,7 @@ void normal(unsigned char key,int x,int y){
         rad=(float)rot1/180*Pi;
         tra1+=0.2f*cos(rad);
         pz-=0.2f*sin(rad);
-        
-//        tra1+=0.2f;
+
     }
     if(key==105){//i 向后
         rad=(float)rot1/180*Pi;
@@ -947,38 +958,19 @@ void normal(unsigned char key,int x,int y){
 
 void drawobjects(GLenum mode){
     
-
     glMaterialfv(GL_FRONT,GL_SPECULAR,matSpecular);
 	glMaterialfv(GL_FRONT,GL_DIFFUSE,matDiffuse);
     glMaterialfv(GL_FRONT,GL_SHININESS,matShininess);
     glMaterialfv(GL_FRONT,GL_EMISSION,matEmission);
 
-
-    glPushMatrix();
-    glTranslatef(tra1+6.7f,trapy,pz-1.7f);
-    glRotated(rotpx, 1, 0, 0);
-    glRotated(rotpz, 0, 0, 1);
-    glRotatef(rot1,0,1,0);
-    glScalef(sca1,sca1,sca1);
-    drawPDX(0);
-    glPopMatrix();
-    
-	
-    glPushMatrix();
-    glTranslatef(tra2-15.0f, 0.5f,hz);
-    glRotatef(rot2,0,1,0);
-    glScalef(sca2,sca2,sca2);
-    drawHMBB(0);
-    glPopMatrix();
-    
-    //关闭光照
+	    //关闭光照
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
     //画阴影
     glPushMatrix();
     //乘以压平的阴影矩阵
     glMultMatrixf((GLfloat*)shadowMat);
-    glTranslatef(tra2-15.0f, 0.5f,hz-3.0f);
+    glTranslatef(tra2-15.0f, 0.5f,hz);
     glRotatef(rot2,0,1,0);
     glScalef(sca2,sca2,sca2);
     drawHMBB(1);
@@ -994,16 +986,35 @@ void drawobjects(GLenum mode){
     glPushMatrix();
     //乘以压平的阴影矩阵
     glMultMatrixf((GLfloat*)shadowMat);
-    glTranslatef(tra1+7.0f,trapy,pz-3.0f);
+    glTranslatef(tra1+6.7f,trapy,pz-1.7f);
     glRotated(rotpx, 1, 0, 0);
+    glRotated(rotpz, 0, 0, 1);
     glRotatef(rot1,0,1,0);
-    glScalef(sca1,sca1,sca1);
+    /*glScalef(sca1,sca1,sca1);*/
     drawPDX(1);
     //旋转
     glPopMatrix();
     glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_COLOR_MATERIAL);
+
+    glPushMatrix();
+    glTranslatef(tra1+6.7f,trapy,pz-1.7f);
+    glRotated(rotpx, 1, 0, 0);
+    glRotated(rotpz, 0, 0, 1);
+    glRotatef(rot1,0,1,0);
+    /*glScalef(sca1,sca1,sca1);*/
+    drawPDX(0);
+    glPopMatrix();
+    
+    glPushMatrix();
+    glTranslatef(tra2-15.0f, 0.5f,hz);
+    glRotatef(rot2,0,1,0);
+    glScalef(sca2,sca2,sca2);
+    drawHMBB(0);
+    glPopMatrix();
+    
+
     
 }
 void init()
@@ -1141,91 +1152,6 @@ GLuint load_texture(const char* file_name)
     return texture_ID;
 }
 
-void forward(){
-    if(selectedIndex==1){
-        for(;tra1<=10;){
-            tra1+=0.2f;
-            display();
-        }
-    }
-    else if(selectedIndex==2){
-        for(;tra2<=10;){
-            tra2+=0.2f;
-            display();
-        }
-    }
-}
-void retreat(){
-    if(selectedIndex==1){
-        for(;tra1>=-5;){
-            tra1-=0.2f;
-            display();
-        }
-    }
-    else if(selectedIndex==2){
-        for(;tra2>=-5;){
-            tra2-=0.2f;
-            display();
-        }
-    }
-}
-void turn(){
-    if(selectedIndex==1){
-        for(;rot1>=-90;){
-            rot1-=1.0f;
-            display();
-        }
-    }
-    else if(selectedIndex==2){
-        for(;rot2>=-90;){
-            rot2-=1.0f;
-            display();
-        }
-    }
-}
-void enlarge(){
-    if(selectedIndex==1){
-        for(;sca1<1.3;){
-            sca1+=0.1f;
-            display();
-        }
-    }
-    else if(selectedIndex==2){
-        for(;sca2<1.3;){
-            sca2+=0.3f;
-            display();
-        }
-    }
-}
-void narrow(){
-    if(selectedIndex==1){
-        for(;sca1>0.7;){
-            sca1-=0.1f;
-            display();
-        }
-    }
-    else if(selectedIndex==2){
-        for(;sca2>0.7;){
-            sca2-=0.3f;
-            display();
-        }
-    }
-}
-void back(){
-    if(selectedIndex==1){
-        tra1=0;
-        rot1=0;
-        sca1=1;
-        display();
-    }
-    else if(selectedIndex==2){
-        tra2=0;
-        rot2=0;
-        sca2=1;
-        display();
-    }
-    
-}
 void go(){
     rot1=0;
     rot2=0;
@@ -1235,7 +1161,7 @@ void go(){
         rot1-=10;
         rot2+=10;
         display();
-//        sleep(1);
+        //Sleep(1);
         count++;
     }
     while(count<20){
@@ -1437,94 +1363,19 @@ void light(){
 void menu(int id){
     switch (id)
     {
-        case 13:exit(0);
-            break;
-        case 14:
+        case 1:
             go();
             break;
-        case 15:
+        case 2:
             recover();
             break;
-		case 16:
+		case 3:
             light();
+            break;
+		case 4:exit(0);
             break;
     }
     glutPostRedisplay();
-}
-
-void menu_PDX(int id){
-    selectedIndex=1;
-    switch (id)
-    {
-        case 1:
-            glPushMatrix();
-            forward();
-            glPopMatrix();
-            break;
-        case 2:
-            glPushMatrix();
-            retreat();
-            glPopMatrix();
-            break;
-        case 3:
-            glPushMatrix();
-            turn();
-            glPopMatrix();
-            break;
-        case 4:
-            glPushMatrix();
-            enlarge();
-            glPopMatrix();
-            break;
-        case 5:
-            glPushMatrix();
-            narrow();
-            glPopMatrix();
-            break;
-        case 6:
-            glPushMatrix();
-            back();
-            glPopMatrix();
-            break;
-    }
-}
-
-void menu_HMBB(int id){
-    selectedIndex=2;
-    switch (id)
-    {
-        case 7:
-            glPushMatrix();
-            forward();
-            glPopMatrix();
-            break;
-        case 8:
-            glPushMatrix();
-            retreat();
-            glPopMatrix();
-            break;
-        case 9:
-            glPushMatrix();
-            turn();
-            glPopMatrix();
-            break;
-        case 10:
-            glPushMatrix();
-            enlarge();
-            glPopMatrix();
-            break;
-        case 11:
-            glPushMatrix();
-            narrow();
-            glPopMatrix();
-            break;
-        case 12:
-            glPushMatrix();
-            back();
-            glPopMatrix();
-            break;
-    }
-    
 }
 
 int main(int argc, char * argv[]) {
@@ -1536,7 +1387,7 @@ int main(int argc, char * argv[]) {
     glutCreateWindow("海绵宝宝");
 
 
-	/*texGround = load_texture("E:\\workspace\\Pro2\\Pro2\\ground1.bmp");
+	texGround = load_texture("E:\\workspace\\Pro2\\Pro2\\ground1.bmp");
     texHMBB_face_front = load_texture("E:\\workspace\\Pro2\\Pro2\\HMBB_face_front.bmp");
     texHMBB_face_back = load_texture("E:\\workspace\\Pro2\\Pro2\\HMBB_face_back.bmp");
     texHMBB_cloth_front = load_texture("E:\\workspace\\Pro2\\Pro2\\HMBB_cloth_front.bmp");
@@ -1546,19 +1397,19 @@ int main(int argc, char * argv[]) {
     texLeft = load_texture("E:\\workspace\\Pro2\\Pro2\\left.bmp");
     texRight = load_texture("E:\\workspace\\Pro2\\Pro2\\Right.bmp");
     texUp = load_texture("E:\\workspace\\Pro2\\Pro2\\Up.bmp");
-    texBall = load_texture("E:\\workspace\\Pro2\\Pro2\\ball.bmp");*/
+    texBall = load_texture("E:\\workspace\\Pro2\\Pro2\\ball.bmp");
 
-    texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
-    texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
-    texHMBB_face_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_back.bmp");
-    texHMBB_cloth_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_front.bmp");
-    texHMBB_cloth_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_back.bmp");
-    texHMBB_sock = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_sock.bmp");
-    texFront = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Front.bmp");
-    texLeft = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/left.bmp");
-    texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
-    texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
-    texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball.bmp");
+    //texGround = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ground1.bmp");
+    //texHMBB_face_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_front.bmp");
+    //texHMBB_face_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_face_back.bmp");
+    //texHMBB_cloth_front = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_front.bmp");
+    //texHMBB_cloth_back = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_cloth_back.bmp");
+    //texHMBB_sock = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/HMBB_sock.bmp");
+    //texFront = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Front.bmp");
+    //texLeft = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/left.bmp");
+    //texRight = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Right.bmp");
+    //texUp = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/Up.bmp");
+    //texBall = load_texture("/Users/yue/Desktop/Computer Graphics/Pro2/Pro2/ball.bmp");
 
 //    texGround = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/ground1.bmp");
 //    texHMBB_face_front = load_texture("/Users/zyy/Documents/XcodeProject/github/Pro2/Pro2/HMBB_face_front.bmp");
@@ -1577,30 +1428,11 @@ int main(int argc, char * argv[]) {
     glutKeyboardFunc(normal);
     glutReshapeFunc(reshape);
     
-    
-    menu_PDX_id=glutCreateMenu(menu_PDX);
-    glutAddMenuEntry("Forward",1);
-    glutAddMenuEntry("Retreat",2);
-    glutAddMenuEntry("Turn",3);
-    glutAddMenuEntry("Enlarge",4);
-    glutAddMenuEntry("Narrow",5);
-    glutAddMenuEntry("Back",6);
-    
-    menu_HMBB_id=glutCreateMenu(menu_HMBB);
-    glutAddMenuEntry("Forward",7);
-    glutAddMenuEntry("Retreat",8);
-    glutAddMenuEntry("Turn",9);
-    glutAddMenuEntry("Enlarge",10);
-    glutAddMenuEntry("Narrow",11);
-    glutAddMenuEntry("Back",12);
-    
     menu_id=glutCreateMenu(menu);
-    glutAddSubMenu("PDX",menu_PDX_id);
-    glutAddSubMenu("HMBB",menu_HMBB_id);
-    glutAddMenuEntry("Exit",13);
-    glutAddMenuEntry("Go", 14);
-    glutAddMenuEntry("Recover", 15);
-	glutAddMenuEntry("Light", 16);
+    glutAddMenuEntry("Go", 1);
+    glutAddMenuEntry("Recover", 2);
+	glutAddMenuEntry("Light", 3);
+	glutAddMenuEntry("Exit",4);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     
     init();
